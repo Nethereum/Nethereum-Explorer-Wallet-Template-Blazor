@@ -9,7 +9,7 @@ Once the PoC is done, all infrastructure components should be ported, pull to th
 To achieve this it will be required to create:
 
 1. Blazor / WASM UI Scheduler 
-2. MVVM (Command / Property Binding)
-3. ...
+2. MVVM (Command / Property Binding) Sample of MVVM (Not Reactive UI https://blog.jeremylikness.com/mvvm-support-in-blazor-dbc38060a4a0)
+3. Messaging Sample of Blazor.RxMessaging https://github.com/bmsantos/RxBlazor
 
 
