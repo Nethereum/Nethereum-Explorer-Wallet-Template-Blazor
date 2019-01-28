@@ -8,3 +8,17 @@ The aim of this application is to provide another wallet / client reference for 
 ![Nethereum Blazor](Screenshots/NethereumBlazorDemo.gif "Nethereum Blazor")
 
 
+## Blazor + ReactiveUI
+ReactiveUI is not fully supported in Blazor, and the hope of this project is to provide an experimental context to enable all the ReactiveUI features in Blazor.
+
++ What it works (Out of the box)
+- MessageBus
+- Binding
+- Subscriptions
+- Observable timers if using Subscribe with "async"
+
++ What it does not work yet (Probably needs a Scheduler)
+- ReactiveCommands
+- Command validation / enable
+- Observable using FromAsync / wait 
+- ...
