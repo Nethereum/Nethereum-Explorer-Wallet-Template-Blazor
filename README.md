@@ -16,6 +16,7 @@ The aim of this application is to provide another wallet / client reference for 
 * Blazor.FlexGrid: The grid component used in Block Page https://github.com/Mewriick/Blazor.FlexGrid
 * Infura: Infura hosts the public Ethereum nodes preconfigured https://infura.io/
 * Testchains: If you need a test chain to run in your localhost  https://github.com/Nethereum/TestChains
+* Etherscan: You may find the home page is inspired by the awesome https://etherscan.io 
 
 ## Blazor + ReactiveUI
 One of the main goals is to eventually have full support of ReactiveUI as the common framework for all the Nethereum FrontEnd exxample and future solutions.
