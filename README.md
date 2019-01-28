@@ -8,7 +8,18 @@ The aim of this application is to provide another wallet / client reference for 
 ![Nethereum Blazor](Screenshots/NethereumBlazorDemo.gif "Nethereum Blazor")
 
 
+# More info:
+* Blazor:  The .Net Html / razor wasm framework https://blazor.net/
+* ReactiveUI: https://reactiveui.net/
+* Blazor.FlexGrid: The grid component used in Block Page https://github.com/Mewriick/Blazor.FlexGrid
+* Infura: Infura hosts the public Ethereum nodes preconfigured
+* Testchains: If you need a test chain to run in your localhost 
+
 ## Blazor + ReactiveUI
+One of the main goals is to eventually have full support of ReactiveUI as the common framework for all the Nethereum FrontEnd exxample and future solutions.
+Avalonia Desktop (Windows, Linux, Mac): https://github.com/Nethereum/Nethereum.UI.Desktop, WindowsForms https://github.com/Nethereum/Nethereum.SimpleWindowsWallet
+Xamarin.Forms Mobile and Desktop wallets:  https://github.com/Nethereum/Nethereum.UI.Wallet.Sample
+
 ReactiveUI is not fully supported in Blazor, and the hope of this project is to provide an experimental context to enable all the ReactiveUI features in Blazor.
 
 ### What it works (Out of the box)
