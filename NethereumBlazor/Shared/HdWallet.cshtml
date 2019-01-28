@@ -1,0 +1,102 @@
+﻿@*@using BlazorReactiveUI.Model
+@using Nethereum.HdWallet;
+
+
+<p class="h4 text-center mb-4">HD Wallet account selection</p>
+
+<label for="hdLoadWords">Mneumonic words</label>
+<input id="hdLoadWords" class="form-control" bind="Words" type="text" />
+
+
+<br />
+<label for="hdLoadPassword">Seed Password</label>
+<input id="hdLoadPassword" class="form-control" bind="SeedPassword" type="text" />
+
+
+<br />
+<label for="hdLoadPath">Path</label>
+<input id="hdLoadPath" class="form-control" bind="Path" type="text" />
+
+
+<br />
+<label for="hdLoadNumberOfAccounts">Number of Accounts</label>
+<input id="hdLoadNumberOfAccounts" class="form-control" bind="NumberOfAccounts" type="text" />
+
+
+<br />
+
+<div class="text-center mt-4">
+    <button onclick="@LoadAccountsAsync" class="btn btn-primary">Load Accounts</button>
+</div>
+
+
+@if (Accounts != null)
+{
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Account</th>
+                    <th scope="col">Private Key</th>
+                    <th scope="col">Select</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (var item in Accounts)
+                {
+                    <tr>
+                        <th scope="row">@item.Index</th>
+                        <td>@item.Address</td>
+                        <td>@item.PrivateKey</td>
+                        <td><button class="btn btn-purple" onclick=@(() => OnAddAccount(item))>Add</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@functions {
+
+public List<HdWalletAccountInfo> Accounts { get; set; } = new List<HdWalletAccountInfo>();
+Action<AccountInfo> OnAddAccount { get; set; }
+
+public string Words { get; set; }
+
+public string SeedPassword { get; set; }
+
+public int NumberOfAccounts { get; set; } = 1;
+
+public string Path { get; set; } = Wallet.DEFAULT_PATH;
+
+
+
+void LoadAccountsAsync()
+{
+
+
+    Accounts.Clear();
+    var wallet = string.IsNullOrEmpty(SeedPassword) ?
+        new Wallet(Words, SeedPassword, Path) :
+        new Wallet(Words, Path);
+
+    for (int i = 0; i < NumberOfAccounts; i++)
+    {
+        var account = wallet.GetAccount(i);
+        var hdWalletAccount = new HdWalletAccountInfo
+        {
+            Index = i,
+            Address = account.Address,
+            PrivateKey = account.PrivateKey
+        };
+        Accounts.Add(hdWalletAccount);
+    }
+
+
+}
+
+}*@
+

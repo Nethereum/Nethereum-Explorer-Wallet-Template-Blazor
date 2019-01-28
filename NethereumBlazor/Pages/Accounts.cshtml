@@ -1,0 +1,84 @@
+﻿@page "/accounts"
+@using System
+@using NethereumBlazor.Services
+@using NethereumBlazor.ViewModels
+@inject AccountsViewModel AccountsViewModel
+@inject IWeb3ProviderService Web3ProviderService
+
+<div class="card">
+    <div class="card-header">
+        <h5>Accounts</h5>  
+    </div>
+    <div class="card-body">
+
+        <div class="form-group row">
+            <label for="privateKey" class="col-sm-1 col-form-label">Private key:</label>
+            <div class="col-sm-10">
+                <input id="privateKey" class="form-control" bind="AccountsViewModel.NewAccount.PrivateKey" type="text" />
+                <small id="privateKeyUrlHelp" class="form-text text-muted">Enter the private key to add a new account, for example: "0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7" or "0xb5b2324bf02d491b087dd6485019daf38882e3ac2d59e96d44251a6705cabb9a"</small>
+
+                <button onclick="@AccountsViewModel.AddNewAccount" class="btn btn-primary">Add Account</button>
+            </div>
+        </div>
+
+        @if (AccountsViewModel.Accounts != null && AccountsViewModel.Accounts.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="grid-table-head">
+                        <tr>
+                            <th scope="col">Account</th>
+                            <th scope="col">Transactions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in AccountsViewModel.Accounts.Items)
+                        {
+                            <tr>
+                                <td>@item.Address</td>
+                                <td>
+                                    
+                                    @if (item.GetTransactions(Web3ProviderService.ChainId).Count > 0)
+                                    {
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="grid-table-head">
+                                                <tr>
+                                                    <th scope="col">Transaction</th>
+                                                    <th scope="col">Pending</th>
+                                                </tr>
+                                            </thead>
+                                            @foreach (var transactionInfo in item.GetTransactions(Web3ProviderService.ChainId))
+                                            {
+                                                <tr>
+                                                    <td><a href="/transaction/@transactionInfo.TransactionHash">@transactionInfo.TransactionHash</a></td>
+                                                    <td>@transactionInfo.Pending</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+
+    //workaround search for the time being
+    [Parameter]
+    string BlockNumber { get; set; }
+    [Parameter]
+    string TransactionHash { get; set; }
+
+    protected override void OnInit()
+    {
+
+        AccountsViewModel.Accounts.Connect().Subscribe(_ => StateHasChanged());
+
+    }
+}

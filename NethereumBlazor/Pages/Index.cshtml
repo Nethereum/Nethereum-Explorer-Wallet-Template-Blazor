@@ -1,0 +1,25 @@
+﻿@page "/"
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <LatestBlocks />
+        </div>
+        <div class="col">
+            <LatestBlockTransactions />
+        </div>
+    </div>
+</div>
+
+@functions {
+
+    //workaround search for the time being
+    [Parameter]
+    string BlockNumber { get; set; }
+
+    [Parameter]
+    string TransactionHash { get; set; }
+
+}
+

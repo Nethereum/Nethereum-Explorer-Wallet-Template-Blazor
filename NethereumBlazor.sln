@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveUI", "ReactiveUI\src\ReactiveUI\ReactiveUI.csproj", "{C9870924-97D5-4923-8BE8-41FCC02F8731}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumBlazor", "NethereumBlazor\NethereumBlazor.csproj", "{D4DECE2E-013F-421A-8C43-69A534E38095}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9870924-97D5-4923-8BE8-41FCC02F8731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9870924-97D5-4923-8BE8-41FCC02F8731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9870924-97D5-4923-8BE8-41FCC02F8731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9870924-97D5-4923-8BE8-41FCC02F8731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DECE2E-013F-421A-8C43-69A534E38095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DECE2E-013F-421A-8C43-69A534E38095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DECE2E-013F-421A-8C43-69A534E38095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DECE2E-013F-421A-8C43-69A534E38095}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8066C74-E534-4A19-8D5B-EEBDF01C102B}
+	EndGlobalSection
+EndGlobal
