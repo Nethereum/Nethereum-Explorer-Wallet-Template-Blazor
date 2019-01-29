@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using DynamicData;
 using NethereumBlazor.Messages;
@@ -16,11 +18,9 @@ namespace NethereumBlazor.ViewModels
         public SendTransactionBaseViewModel(IAccountsService accountsService)
         {
             AccountsService = accountsService;
-            this.WhenAnyValue(x => x.Account, (x) => !string.IsNullOrEmpty(x)).Subscribe(async _ =>
-                await RefreshBalanceAsync()
-            );
-
-            MessageBus.Current.Listen<UrlChanged>().Subscribe(async x => { await RefreshBalanceAsync(); });
+            this.WhenAnyValue(x => x.Account, (x) => !string.IsNullOrEmpty(x)).Select(_=>RefreshBalanceAsync().ToObservable()).Concat().Subscribe();
+            
+            MessageBus.Current.Listen<UrlChanged>().Select(_ => RefreshBalanceAsync().ToObservable()).Concat().Subscribe();
 
             AccountsService.Accounts.Connect().Subscribe(x => { SelectFirstAccount(); });
 

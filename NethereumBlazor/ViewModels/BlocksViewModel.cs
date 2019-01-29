@@ -16,7 +16,7 @@ namespace NethereumBlazor.ViewModels
         public BlocksViewModel(NewBlockProcessingService newBlockProcessingService)
         {
             _newBlockProcessingService = newBlockProcessingService;
-            MessageBus.Current.Listen<UrlChanged>().Subscribe(async x =>
+            MessageBus.Current.Listen<UrlChanged>().Subscribe(x =>
                 {
                     lock (_lockingObject)
                     {

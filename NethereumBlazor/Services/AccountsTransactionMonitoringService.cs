@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using ReactiveUI;
 
@@ -17,7 +18,7 @@ namespace NethereumBlazor.Services
             _accountsService = accountsService;
             _web3ProviderService = web3ProviderService;
             _timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.MainThreadScheduler)
-                .Subscribe(async _ => await ProcessCompletedTransactions().ConfigureAwait(false));
+                .Select( _ => ProcessCompletedTransactions().ToObservable()).Concat().Subscribe();
         }
 
         public async Task ProcessCompletedTransactions()

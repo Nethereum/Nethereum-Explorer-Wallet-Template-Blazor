@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
@@ -25,24 +27,26 @@ namespace NethereumBlazor.ViewModels
         {
             _web3ProviderService = web3ProviderService;
             _block = new BlockViewModel();
-            MessageBus.Current.Listen<UrlChanged>().Subscribe(async x =>
-                {
-                    Loading = true;
-                    try
-                    {
-                        await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
-                        BlockNumber = _blockNumber;
-                    }
-                    finally
-                    {
-                        Loading = false;
-                        _semaphoreSlim.Release();
-                    }
-                }
-            );
+            MessageBus.Current.Listen<UrlChanged>().Select(x => ReloadTransactions().ToObservable()).Concat().Subscribe();
 
-            this.WhenAnyValue(x => x.BlockNumber).Subscribe(async _ =>
-                GetBlockTransactionsAsync());
+            this.WhenAnyValue(x => x.BlockNumber).Select(x => 
+                GetBlockTransactionsAsync().ToObservable()).Concat().Subscribe();
+        }
+
+        private async Task ReloadTransactions()
+        {
+            Loading = true;
+            try
+            {
+                await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
+                Transactions.Clear();
+                BlockNumber = _blockNumber;
+            }
+            finally
+            {
+                Loading = false;
+                _semaphoreSlim.Release();
+            }
         }
 
         public bool Loading
@@ -104,6 +108,10 @@ namespace NethereumBlazor.ViewModels
                         }
                     }
                 }
+            }
+            catch
+            {
+                //hacky graceful catch
             }
             finally
             {

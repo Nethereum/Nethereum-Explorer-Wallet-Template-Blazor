@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Numerics;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using Nethereum.Contracts;
@@ -61,11 +63,10 @@ namespace NethereumBlazor.ViewModels
         {
             _decimalPlaces = 18;
 
-            this.WhenAnyValue(x => x.Account, x => x.ContractAddress, (x,y) => !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y)).Subscribe(async _ =>
-                await RefreshTokenBalanceAsync()
-            );
+            this.WhenAnyValue(x => x.Account, x => x.ContractAddress, (x,y) => !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y)).Select(_ =>
+                 RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
 
-            MessageBus.Current.Listen<UrlChanged>().Subscribe(async x => { await RefreshTokenBalanceAsync(); });
+            MessageBus.Current.Listen<UrlChanged>().Select( _=> RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
         }
 
         public async Task RefreshTokenBalanceAsync()

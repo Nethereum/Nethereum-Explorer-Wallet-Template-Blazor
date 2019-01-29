@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
@@ -40,34 +41,33 @@ namespace NethereumBlazor.Services
         public NewBlockProcessingService(IWeb3ProviderService web3ProviderService)
         {
             _web3ProviderService = web3ProviderService;
-            MessageBus.Current.Listen<UrlChanged>().Subscribe(async x =>
-                {
-                    Loading = true;
-                    try
-                    {
-                        await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
-                        Blocks.Clear();
-                        CreateBlockWatcher();
-
-                    }
-                    finally
-                    {
-                        _semaphoreSlim.Release();
-                    }
-                }
-            );
-
+            MessageBus.Current.Listen<UrlChanged>().Select(_=> RestartBlockWatcherAsync().ToObservable()).Concat().Subscribe();
             CreateBlockWatcher();
+        }
+
+        private async Task RestartBlockWatcherAsync()
+        {
+            Loading = true;
+            try
+            {
+                await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
+                Blocks.Clear();
+                CreateBlockWatcher();
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
         }
 
         public void CreateBlockWatcher()
         {
-            //This deadlocks the ui when using Async,I assume is threading
+            //This deadlocks the ui when using Async, due to internal Task.Start
             //_timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.MainThreadScheduler)
             //    .Select(_ => Observable.FromAsync(GetLatestBlocksAsync)).Subscribe();
 
             _timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.MainThreadScheduler)
-                .Subscribe(async _ => await GetLatestBlocksAsync().ConfigureAwait(false));
+                .Select(_=> GetLatestBlocksAsync().ToObservable()).Concat().Subscribe();
         }
 
         public async Task GetLatestBlocksAsync()
@@ -100,7 +100,7 @@ namespace NethereumBlazor.Services
                             lastBlockNumber = lastBlockNumber + 1;
                         }
 
-                        BlockNumber = (ulong)blockNumber.Value;
+                        BlockNumber = (ulong) blockNumber.Value;
                         MessageBus.Current.SendMessage(new NewBlock(blockNumber.Value));
                         Blocks.Edit(innerList =>
                             {
@@ -123,6 +123,11 @@ namespace NethereumBlazor.Services
 
                     }
                 }
+            }
+            catch
+            {
+                //Hacky
+                //Graceful catch 
             }
             finally
             {

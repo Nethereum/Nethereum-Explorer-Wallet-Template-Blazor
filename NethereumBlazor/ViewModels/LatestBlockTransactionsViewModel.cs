@@ -9,12 +9,11 @@ namespace NethereumBlazor.ViewModels
     {
         public LatestBlockTransactionsViewModel(IWeb3ProviderService web3ProviderService):base(web3ProviderService)
         {
-            MessageBus.Current.Listen<NewBlock>().Subscribe(async x =>
+            MessageBus.Current.Listen<NewBlock>().Subscribe(x =>
                 {
                     if (x.BlockNumber != BlockNumber)
                     {
                         BlockNumber = x.BlockNumber;
-
                     }
                 }
            );
