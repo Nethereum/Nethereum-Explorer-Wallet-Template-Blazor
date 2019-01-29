@@ -1,0 +1,3 @@
+[submodule "ReactiveUI"]
+	path = ReactiveUI
+	url = https://github.com/Nethereum/ReactiveUI.git
