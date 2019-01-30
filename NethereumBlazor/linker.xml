@@ -13,4 +13,11 @@
   </assembly>
   <!-- Name of the entry point assembly -->
   <assembly fullname="Blazor.FlexGrid.Demo.Client" />
+  <assembly fullname="NethereumBlazor" />
+  
+  <assembly fullname="System.Reactive" />
+
+  
+
+
 </linker>

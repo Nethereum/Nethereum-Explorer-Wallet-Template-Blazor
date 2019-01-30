@@ -1,5 +1,4 @@
 using Blazor.FlexGrid;
-using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NethereumBlazor.Services;
@@ -42,7 +41,6 @@ namespace NethereumBlazor
             });
 
             services.AddSingleton<Web3UrlViewModel>();
-            services.AddStorage();
         }
 
         public void Configure(IBlazorApplicationBuilder app)

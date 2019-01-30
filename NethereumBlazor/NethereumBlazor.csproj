@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="Blazor.FlexGrid" Version="0.4.1" />
-    <PackageReference Include="Cloudcrate.AspNetCore.Blazor.Browser.Storage" Version="0.5.1" />
     <PackageReference Include="DynamicData" Version="6.7.1.2534" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.8.0-preview1-20181121.1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.8.0-preview1-20181121.1" PrivateAssets="all" />
@@ -19,8 +18,9 @@
     <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.7.0" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <BlazorLinkerDescriptor Include="Linker.xml" />
+    <!--<BlazorLinkerDescriptor Include="Linker.xml" />-->
   </ItemGroup>
 
   <ItemGroup>
@@ -47,5 +47,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
+
+  <!--<Target Name="CopyFiles" BeforeTargets="GetCopyToOutputDirectoryItems">
+    <Copy SourceFiles="System.Reactive.dll" DestinationFolder="$(OutputPath)" ContinueOnError="true" />
+  </Target>-->
 
 </Project>

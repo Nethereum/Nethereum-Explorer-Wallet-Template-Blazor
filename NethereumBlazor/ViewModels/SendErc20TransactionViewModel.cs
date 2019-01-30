@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -58,6 +59,9 @@ namespace NethereumBlazor.ViewModels
             set => this.RaiseAndSetIfChanged(ref _decimalPlaces, value);
         }
 
+        protected ReactiveCommand<Unit, string> _executeTrasnactionCommand;
+        //Does not work / threading issue
+        public ReactiveCommand<Unit, string> ExecuteTransactionCommand => this._executeTrasnactionCommand;
 
         public SendErc20TransactionViewModel(IAccountsService accountsService) : base(accountsService)
         {
@@ -67,6 +71,17 @@ namespace NethereumBlazor.ViewModels
                  RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
 
             MessageBus.Current.Listen<UrlChanged>().Select( _=> RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
+            /* Does not work threading
+            var canExecuteTransaction = this.WhenAnyValue(
+                x => x.AddressTo,
+                x => x.Account,
+                (addressTo, account) =>
+                    Utils.IsValidAddress(addressTo) &&
+                    Utils.IsValidAddress(account));
+
+
+            this._executeTrasnactionCommand = ReactiveCommand.CreateFromTask(SendTokenAsync, canExecuteTransaction);
+            */
         }
 
         public async Task RefreshTokenBalanceAsync()
