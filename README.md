@@ -19,7 +19,7 @@ The aim of this application is to provide another wallet / client reference for 
 * Etherscan: You may find that the home page is inspired by the awesome https://etherscan.io 
 
 ## Blazor + ReactiveUI
-One of the main goals is to eventually have full support of ReactiveUI as the common framework for all the Nethereum FrontEnd exxample and future solutions.
+One of the main goals is to eventually have full support of ReactiveUI as the common framework for all the Nethereum FrontEnd example and future solutions.
 Avalonia Desktop (Windows, Linux, Mac): https://github.com/Nethereum/Nethereum.UI.Desktop, WindowsForms https://github.com/Nethereum/Nethereum.SimpleWindowsWallet
 Xamarin.Forms Mobile and Desktop wallets:  https://github.com/Nethereum/Nethereum.UI.Wallet.Sample
 
