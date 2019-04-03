@@ -6,7 +6,7 @@ namespace NethereumBlazor.Services
 {
     public class Web3ProviderService: IWeb3ProviderService
     {
-        public string CurrentUrl { get; set; } = "https://mainnet.infura.io";
+        public string CurrentUrl { get; set; } = "https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c";
 
         //TODO: Simple chainId workaround, this should be the ChainId from the connection, when adding the url we should get the chainId using rpc and add it here.
         public string ChainId => CurrentUrl;
