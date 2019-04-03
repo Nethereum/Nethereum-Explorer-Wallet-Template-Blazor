@@ -7,7 +7,7 @@ namespace NethereumBlazor.Services
         public List<TokenInfo> GetTokens(string chainId)
         {
             //hack / workaround chainId this needs to use the rpc getchainid
-            if (chainId.ToLower() == "https://mainent.infura.io".ToLower())
+            if (chainId.ToLower() == "https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c".ToLower())
             {
                 return new List<TokenInfo>(
                     new []
