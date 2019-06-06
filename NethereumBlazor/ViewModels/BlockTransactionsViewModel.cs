@@ -29,7 +29,7 @@ namespace NethereumBlazor.ViewModels
             _block = new BlockViewModel();
             MessageBus.Current.Listen<UrlChanged>().Select(x => ReloadTransactions().ToObservable()).Concat().Subscribe();
 
-            this.WhenAnyValue(x => x.BlockNumber).Select(x => 
+            this.WhenAnyValue(x => x.BlockNumber).Select(x =>
                 GetBlockTransactionsAsync().ToObservable()).Concat().Subscribe();
         }
 
@@ -79,51 +79,57 @@ namespace NethereumBlazor.ViewModels
 
         public async Task GetBlockTransactionsAsync()
         {
-            var transactionViewModels = new List<TransactionViewModel>();
-            try
-            {
-                Loading = true;
-                await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            //Hack / Workaround prevent crashing on start up
+            if (BlockNumber != null)
+            { 
 
-                var web3 = _web3ProviderService.GetWeb3();
-                if (web3 != null && BlockNumber != null)
+                var transactionViewModels = new List<TransactionViewModel>();
+                try
                 {
-                    var blockWithTransactions = await web3.Eth.Blocks.GetBlockWithTransactionsByNumber
-                        .SendRequestAsync(new HexBigInteger(BlockNumber.Value)).ConfigureAwait(false);
 
-                    if (blockWithTransactions == null)
+                    Loading = true;
+                    await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
+
+                    var web3 = _web3ProviderService.GetWeb3();
+                    if (web3 != null && BlockNumber != null)
                     {
-                        BlockFound = false;
-                        Loading = false;
-                    }
-                    else
-                    {
-                        BlockFound = true;
-                        Block = new BlockViewModel(blockWithTransactions);
-                        foreach (var transaction in blockWithTransactions.Transactions)
+                        var blockWithTransactions = await web3.Eth.Blocks.GetBlockWithTransactionsByNumber
+                            .SendRequestAsync(new HexBigInteger(BlockNumber.Value)).ConfigureAwait(false);
+
+                        if (blockWithTransactions == null)
                         {
-                            var txnTransactionViewModel = new TransactionViewModel();
-                            txnTransactionViewModel.Initialise(transaction);
-                            transactionViewModels.Add(txnTransactionViewModel);
+                            BlockFound = false;
+                            Loading = false;
+                        }
+                        else
+                        {
+                            BlockFound = true;
+                            Block = new BlockViewModel(blockWithTransactions);
+                            foreach (var transaction in blockWithTransactions.Transactions)
+                            {
+                                var txnTransactionViewModel = new TransactionViewModel();
+                                txnTransactionViewModel.Initialise(transaction);
+                                transactionViewModels.Add(txnTransactionViewModel);
+                            }
                         }
                     }
                 }
-            }
-            catch
-            {
-                //hacky graceful catch
-            }
-            finally
-            {
-                Transactions.Edit(innerList =>
+                catch
                 {
-                    innerList.Clear();
-                    innerList.AddOrUpdate(transactionViewModels);
-                    Loading = false;
-                    
-                });
+                    //hacky graceful catch
+                }
+                finally
+                {
+                    Transactions.Edit(innerList =>
+                    {
+                        innerList.Clear();
+                        innerList.AddOrUpdate(transactionViewModels);
+                        Loading = false;
 
-                _semaphoreSlim.Release();
+                    });
+
+                    _semaphoreSlim.Release();
+                }
             }
         }
 

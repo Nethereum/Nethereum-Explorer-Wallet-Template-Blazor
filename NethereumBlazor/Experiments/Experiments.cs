@@ -6,7 +6,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
 using Nethereum.Web3.Accounts;
 using Org.BouncyCastle.Cms;
 using ReactiveUI;

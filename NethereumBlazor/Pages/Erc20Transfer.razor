@@ -1,10 +1,11 @@
-﻿@page "/etherTransfer"
-@using System.Security.Cryptography.X509Certificates
+﻿@page "/erc20Transfer"
+@using Microsoft.AspNetCore.Components
 @using NethereumBlazor.ViewModels
 @using ReactiveUI
-@inject SendTransactionViewModel SendTransactionViewModel
+@inject SendErc20TransactionViewModel SendTransactionViewModel
+
 <div class="card">
-    <h5 class="card-header">Transfer Ether</h5>
+    <h5 class="card-header">Transfer ERC0 Token</h5>
     <div class="card-body">
         <div class="form-group row">
             <label for="fromAccount" class="col-sm-1 col-form-label">From Account:</label>
@@ -29,22 +30,46 @@
 
                 @if (SendTransactionViewModel.Accounts.Count > 0)
                 {
-                    <small id="accountBalance" class="form-text text-muted">Ether Balance: @SendTransactionViewModel.EtherBalance <button onclick="@SendTransactionViewModel.RefreshBalanceAsync" class="btn-link">Refresh</button></small>
+                    <small id="accountBalance" class="form-text text-muted">Ether Balance: @SendTransactionViewModel.EtherBalance <button class="btn-link" onclick="@SendTransactionViewModel.RefreshBalanceAsync">Refresh</button></small>
+                    <small id="tokenBalance" class="form-text text-muted">Token Balance: @SendTransactionViewModel.TokenBalance <button class="btn-link" onclick="@SendTransactionViewModel.RefreshTokenBalanceAsync">Refresh</button></small>
                 }
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="" class="col-sm-1 col-form-label">Contract Address:</label>
+            <div class="col-sm-10">
+                <input id="TokenContractAddress" class="form-control" bind="@SendTransactionViewModel.ContractAddress" type="text" />
+                <small id="TokenContractAddressHelp" class="form-text text-muted">The ERC20 contract address</small>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="" class="col-sm-1 col-form-label">Decimal Places:</label>
+            <div class="col-sm-10">
+                <input id="TokenDecimalPlaces" class="form-control" bind="@SendTransactionViewModel.DecimalPlaces" type="text" />
+                <small id="TokenDecimalPlacesHelp" class="form-text text-muted">The number of decimal places of ERC20 Token</small>
             </div>
         </div>
         <div class="form-group row">
             <label for="toAccount" class="col-sm-1 col-form-label">To Account:</label>
             <div class="col-sm-10">
-                <input id="toAccount" class="form-control" bind="@SendTransactionViewModel.AddressTo" type="text" />
-                <small id="toAccountHelp" class="form-text text-muted">The account address to transfer the Ether to</small>
+                <input id="toAccount" class="form-control" bind="@SendTransactionViewModel.TransferTo" type="text" />
+                <small id="toAccountHelp" class="form-text text-muted">The account address to transfer the token to</small>
             </div>
         </div>
+
         <div class="form-group row">
-            <label for="etherAmount" class="col-sm-1 col-form-label">Ether Amount:</label>
+            <label for="etherAmount" class="col-sm-1 col-form-label">Token Amount:</label>
+            <div class="col-sm-10">
+                <input id="tokenAmount" class="form-control" bind="@SendTransactionViewModel.TokenAmount" type="text" />
+                <small id="tokenAmountHelp" class="form-text text-muted">The token amount to transfer</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="etherAmount" class="col-sm-1 col-form-label">Ether Amount (Optional):</label>
             <div class="col-sm-10">
                 <input id="etherAmount" class="form-control" bind="@SendTransactionViewModel.AmountInEther" type="text" />
-                <small id="etherAmountHelp" class="form-text text-muted">The Ether amount to transfer</small>
+                <small id="etherAmountHelp" class="form-text text-muted">The optional Ether amount to transfer at the same time as the token</small>
             </div>
         </div>
         <div class="form-group row">
@@ -53,7 +78,7 @@
                 <input id="gasPrice" class="form-control" bind="@SendTransactionViewModel.GasPrice" type="text" />
                 <small id="gasPriceHelp" class="form-text text-muted">The optional gas price in GWei</small>
                 <br />
-                <button onclick="@TransferEtherAsync" class="btn btn-primary">Transfer Ether</button>
+                <button onclick="@TransferTokenAsync" class="btn btn-primary">Transfer Token</button>
             </div>
         </div>
 
@@ -64,6 +89,7 @@
         </div>
     </div>
 </div>
+
 
 
 @functions {
@@ -89,9 +115,9 @@
 
     public string LatestTransactionHash { get; set; }
 
-    async Task TransferEtherAsync()
+    async Task TransferTokenAsync()
     {
-        LatestTransactionHash = await SendTransactionViewModel.SendTransactionAsync();
+        LatestTransactionHash = await SendTransactionViewModel.SendTokenAsync();
     }
 
 
@@ -105,5 +131,12 @@
         {
             StateHasChanged();
         });
+
+        SendTransactionViewModel.WhenAnyValue(x => x.TokenBalance).Subscribe(_ =>
+        {
+            StateHasChanged();
+        });
     }
+
+
 }

@@ -18,7 +18,7 @@ namespace NethereumBlazor.Services
             _accountsService = accountsService;
             _web3ProviderService = web3ProviderService;
             _timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.MainThreadScheduler)
-                .Select( _ => ProcessCompletedTransactions().ToObservable()).Concat().Subscribe();
+                .Select(_ => ProcessCompletedTransactions().ToObservable()).Concat().Subscribe();
         }
 
         public async Task ProcessCompletedTransactions()

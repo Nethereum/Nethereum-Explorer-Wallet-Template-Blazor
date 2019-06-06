@@ -42,7 +42,7 @@ namespace NethereumBlazor.Services
         {
             _web3ProviderService = web3ProviderService;
             MessageBus.Current.Listen<UrlChanged>().Select(_=> RestartBlockWatcherAsync().ToObservable()).Concat().Subscribe();
-            CreateBlockWatcher();
+            //Removed block watcher on start to prevent crashing
         }
 
         private async Task RestartBlockWatcherAsync()

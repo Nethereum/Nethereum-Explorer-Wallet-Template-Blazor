@@ -39,7 +39,7 @@
     protected override void OnInit() {
         //refreshing the seconds countdown
         System.Reactive.Linq.Observable.Timer(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(2000), RxApp.MainThreadScheduler)
-                .Subscribe( _ => StateHasChanged());
+                .Subscribe(_ => StateHasChanged());
 
         BlocksViewModel.Blocks.Connect().Subscribe(_ => StateHasChanged());
 

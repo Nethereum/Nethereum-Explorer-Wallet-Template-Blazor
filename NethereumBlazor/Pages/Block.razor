@@ -1,10 +1,12 @@
 ﻿@page "/block/{BlockNumber}"
-@addTagHelper *, Blazor.FlexGrid
-@addTagHelper *, BlazorStrap
+@using Blazor.FlexGrid
+@using Blazor.FlexGrid.Components
+@using Blazor.FlexGrid.DataAdapters
+@using Blazor.FlexGrid.DataSet.Options
+@using Blazor.FlexGrid.Components.Configuration
 @inject BlockTransactionsViewModel BlockTransactionsViewModel
 @using System.Numerics
-@using Blazor.FlexGrid.Components.Configuration
-@using Blazor.FlexGrid.DataAdapters
+@using Microsoft.AspNetCore.Components
 @using NethereumBlazor.ViewModels
 @inject BlazorComponentColumnCollection<TransactionViewModel> Collection
 
@@ -50,15 +52,15 @@
             </table>
 
 
-                <GridView DataAdapter="@dataAdapter" PageSize="10"></GridView>
+            <GridView DataAdapter="@dataAdapter" PageSize="10"></GridView>
 
-                }
+        }
 
-                @if (!BlockTransactionsViewModel.Loading && !BlockTransactionsViewModel.BlockFound)
-                {
-                    <div>No Block Found</div>
-                }
-        </div>
+        @if (!BlockTransactionsViewModel.Loading && !BlockTransactionsViewModel.BlockFound)
+        {
+            <div>No Block Found</div>
+        }
+    </div>
 </div>
 
 @{
@@ -68,30 +70,30 @@ Collection.AddColumnValueRenderFunction(txn => txn.TransactionHash, transactionH
 
 @functions {
 
-//workaround search for the time being
-[Parameter]
-string BlockNumber { get; set; }
+    //workaround search for the time being
+    [Parameter]
+    string BlockNumber { get; set; }
 
-[Parameter]
-string TransactionHash { get; set; }
-
-
-CollectionTableDataAdapter<TransactionViewModel> dataAdapter;
+    [Parameter]
+    string TransactionHash { get; set; }
 
 
+    CollectionTableDataAdapter<TransactionViewModel> dataAdapter;
 
-public int TransactionCount { get; set; }
 
-protected override async Task OnParametersSetAsync()
-{
-    BlockTransactionsViewModel.BlockNumber = BigInteger.Parse(BlockNumber);
-    BlockTransactionsViewModel.Transactions.Connect()
-        .Subscribe(_ =>
-            {
-                TransactionCount = BlockTransactionsViewModel.Transactions.Count;
-                dataAdapter = new CollectionTableDataAdapter<TransactionViewModel>(BlockTransactionsViewModel.Transactions.Items.ToArray());
 
-                StateHasChanged();
-            });
-}
+    public int TransactionCount { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        BlockTransactionsViewModel.BlockNumber = BigInteger.Parse(BlockNumber);
+        BlockTransactionsViewModel.Transactions.Connect()
+            .Subscribe(_ =>
+                {
+                    TransactionCount = BlockTransactionsViewModel.Transactions.Count;
+                    dataAdapter = new CollectionTableDataAdapter<TransactionViewModel>(BlockTransactionsViewModel.Transactions.Items.ToArray());
+
+                    StateHasChanged();
+                });
+    }
 }
