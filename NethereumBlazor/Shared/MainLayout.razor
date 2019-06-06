@@ -3,7 +3,7 @@
 @using NethereumBlazor.Services
 @using NethereumBlazor.ViewModels
 @using ReactiveUI
-@inherits BlazorLayoutComponent
+@inherits LayoutComponentBase
 @inject NewBlockProcessingService NewBlockProcessingService
 @inject Web3UrlViewModel Web3UrlViewModel
 @inject IUriHelper UriHelper
@@ -24,17 +24,17 @@
                 <option value="http://127.0.0.1:8545">http://127.0.0.1:8545</option>
             </select>
             <input type="text" class="form-control mr-sm-2" bind="Web3UrlViewModel.Url" placeholder="Chain Url" />
-            
+
             @if (QueryError)
             {
 
                <input class="form-control is-invalid mr-sm-2" type="search" placeholder="Search Block,Txnhash" bind="@Query"  aria-label="Search" required/>
-                   
+
             }
             else
-            { 
+            {
                  <input class="form-control mr-sm-2" type="search" placeholder="Search Block,Txnhash" bind="@Query" aria-label="Search" required/>
-                 
+
             }
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="@SearchBlockchain">Search</button>
     <small> Block Number: <strong>@NewBlockProcessingService.BlockNumber.ToString()</strong> </small>
@@ -60,7 +60,7 @@
         NewBlockProcessingService.WhenAnyValue(x => x.Loading).Subscribe(_ => StateHasChanged());
     }
 
-    
+
     public void SearchBlockchain()
     {
         Query = Query.Trim();

@@ -1,5 +1,6 @@
 ﻿@page "/accounts"
 @using System
+@using Microsoft.AspNetCore.Components
 @using NethereumBlazor.Services
 @using NethereumBlazor.ViewModels
 @inject AccountsViewModel AccountsViewModel
@@ -7,7 +8,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h5>Accounts</h5>  
+        <h5>Accounts</h5>
     </div>
     <div class="card-body">
 
@@ -22,7 +23,7 @@
                     <strong>Warning:</strong> This application is targeted to <strong>developers and experimental</strong>. Private keys are only stored in memory, nevertheless if using accounts from <strong>Mainnet</strong>, it is recommended to download the source from <a href="https://github.com/Nethereum/NethereumBlazor" class="alert-link" target="_blank">Github</a> and run it locally.
                 </div>
             </div>
-           
+
         </div>
 
         @if (AccountsViewModel.Accounts != null && AccountsViewModel.Accounts.Count > 0)
@@ -42,7 +43,7 @@
                             <tr>
                                 <td>@item.Address</td>
                                 <td>
-                                    
+
                                     @if (item.GetTransactions(Web3ProviderService.ChainId).Count > 0)
                                     {
                                         <table class="table table-bordered table-hover">
