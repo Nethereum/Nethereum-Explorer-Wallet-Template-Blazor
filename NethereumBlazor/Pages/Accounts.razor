@@ -18,7 +18,7 @@
                 <input id="privateKey" class="form-control" bind="AccountsViewModel.NewAccount.PrivateKey" type="text" />
                 <small id="privateKeyUrlHelp" class="form-text text-muted">Enter the private key to add a new account, for example: "0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7" or "0xb5b2324bf02d491b087dd6485019daf38882e3ac2d59e96d44251a6705cabb9a"</small>
 
-                <button onclick="@AccountsViewModel.AddNewAccount" class="btn btn-primary">Add Account</button>
+                <button @onclick="@AccountsViewModel.AddNewAccount" class="btn btn-primary">Add Account</button>
                 <div class="alert alert-danger" style="margin-top: 10px" role="alert">
                     <strong>Warning:</strong> This application is targeted to <strong>developers and experimental</strong>. Private keys are only stored in memory, nevertheless if using accounts from <strong>Mainnet</strong>, it is recommended to download the source from <a href="https://github.com/Nethereum/NethereumBlazor" class="alert-link" target="_blank">Github</a> and run it locally.
                 </div>
@@ -76,11 +76,11 @@
 
     //workaround search for the time being
     [Parameter]
-    string BlockNumber { get; set; }
+    public string BlockNumber { get; set; }
     [Parameter]
-    string TransactionHash { get; set; }
+    public string TransactionHash { get; set; }
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
 
         AccountsViewModel.Accounts.Connect().Subscribe(_ => StateHasChanged());

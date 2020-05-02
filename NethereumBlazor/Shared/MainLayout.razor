@@ -1,5 +1,3 @@
-@using DynamicData.Kernel
-@using Microsoft.AspNetCore.Blazor.Services
 @using Microsoft.AspNetCore.Components
 @using NethereumBlazor.Services
 @using NethereumBlazor.ViewModels
@@ -7,7 +5,7 @@
 @inherits LayoutComponentBase
 @inject NewBlockProcessingService NewBlockProcessingService
 @inject Web3UrlViewModel Web3UrlViewModel
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 <div class="sidebar">
     <NavMenu />
@@ -22,7 +20,7 @@
 
 
         <div class="form-inline">
-            <select class="form-control mr-sm-2" onchange="@UrlChange">
+            <select class="form-control mr-sm-2" @onchange="@UrlChange">
                 <option value="https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c" selected>https://mainnet.infura.io</option>
                 <option value="https://kovan.infura.io/v3/7238211010344719ad14a89db874158c">https://kovan.infura.io</option>
                 <option value="https://ropsten.infura.io/v3/7238211010344719ad14a89db874158c">https://ropsten.infura.io</option>
@@ -42,7 +40,7 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search Block, Txn Hash" bind="@Query" aria-label="Search" required />
 
             }
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="@SearchBlockchain">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" @onclick="@SearchBlockchain">Search</button>
 
         </div>
 
@@ -60,7 +58,7 @@
     public string Query { get; set; }
     public bool QueryError { get; set; } = false;
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
         Web3UrlViewModel.Url = "https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c";
         NewBlockProcessingService.WhenAnyValue(x => x.Loading).Subscribe(_ => StateHasChanged());
@@ -77,13 +75,13 @@
             case SearchType.Block:
                 {
 
-                    UriHelper.NavigateTo("block/" + Query);
+                    NavigationManager.NavigateTo("block/" + Query);
                     QueryError = false;
                     break;
                 }
             case SearchType.Transaction:
                 {
-                    UriHelper.NavigateTo("/transaction/" + Query);
+                    NavigationManager.NavigateTo("/transaction/" + Query);
                     QueryError = false;
                     break;
                 }
@@ -94,7 +92,7 @@
 
     }
 
-    protected void UrlChange(UIChangeEventArgs urlChangeEventArgs)
+    protected void UrlChange(ChangeEventArgs urlChangeEventArgs)
     {
         Web3UrlViewModel.Url = (string)urlChangeEventArgs.Value;
     }

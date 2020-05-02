@@ -30,8 +30,8 @@
 
                 @if (SendTransactionViewModel.Accounts.Count > 0)
                 {
-                    <small id="accountBalance" class="form-text text-muted">Ether Balance: @SendTransactionViewModel.EtherBalance <button class="btn-link" onclick="@SendTransactionViewModel.RefreshBalanceAsync">Refresh</button></small>
-                    <small id="tokenBalance" class="form-text text-muted">Token Balance: @SendTransactionViewModel.TokenBalance <button class="btn-link" onclick="@SendTransactionViewModel.RefreshTokenBalanceAsync">Refresh</button></small>
+                    <small id="accountBalance" class="form-text text-muted">Ether Balance: @SendTransactionViewModel.EtherBalance <button class="btn-link" @onclick="@SendTransactionViewModel.RefreshBalanceAsync">Refresh</button></small>
+                    <small id="tokenBalance" class="form-text text-muted">Token Balance: @SendTransactionViewModel.TokenBalance <button class="btn-link" @onclick="@SendTransactionViewModel.RefreshTokenBalanceAsync">Refresh</button></small>
                 }
             </div>
         </div>
@@ -78,7 +78,7 @@
                 <input id="gasPrice" class="form-control" bind="@SendTransactionViewModel.GasPrice" type="text" />
                 <small id="gasPriceHelp" class="form-text text-muted">The optional gas price in GWei</small>
                 <br />
-                <button onclick="@TransferTokenAsync" class="btn btn-primary">Transfer Token</button>
+                <button @onclick="@TransferTokenAsync" class="btn btn-primary">Transfer Token</button>
             </div>
         </div>
 
@@ -96,13 +96,13 @@
 
     //workaround search for the time being
     [Parameter]
-    string BlockNumber { get; set; }
+    public string BlockNumber { get; set; }
 
     [Parameter]
-    string TransactionHash { get; set; }
+    public string TransactionHash { get; set; }
 
 
-    protected void SelectedAccountChange(UIChangeEventArgs accountChangeEventArgs)
+    protected void SelectedAccountChange(ChangeEventArgs accountChangeEventArgs)
     {
         SendTransactionViewModel.Account = (string)accountChangeEventArgs.Value;
 
@@ -121,7 +121,7 @@
     }
 
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
         SendTransactionViewModel.Accounts.Connect().Subscribe(_ => StateHasChanged());
 

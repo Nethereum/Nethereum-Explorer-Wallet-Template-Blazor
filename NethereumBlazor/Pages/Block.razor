@@ -72,10 +72,10 @@ Collection.AddColumnValueRenderFunction(txn => txn.TransactionHash, transactionH
 
     //workaround search for the time being
     [Parameter]
-    string BlockNumber { get; set; }
+    public string BlockNumber { get; set; }
 
     [Parameter]
-    string TransactionHash { get; set; }
+    public string TransactionHash { get; set; }
 
 
     CollectionTableDataAdapter<TransactionViewModel> dataAdapter;
@@ -84,7 +84,7 @@ Collection.AddColumnValueRenderFunction(txn => txn.TransactionHash, transactionH
 
     public int TransactionCount { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
         BlockTransactionsViewModel.BlockNumber = BigInteger.Parse(BlockNumber);
         BlockTransactionsViewModel.Transactions.Connect()
