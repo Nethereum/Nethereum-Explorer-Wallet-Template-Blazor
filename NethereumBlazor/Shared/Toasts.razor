@@ -12,7 +12,7 @@
                      class="rounded mr-2" alt="...">
                 <strong class="mr-auto">@toast.Title</strong>
                 <small>@string.Format(@"> {0:mm} mins {0:ss} secs ago", (DateTime.Now - toast.Received))</small>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="@(()=> ToastsViewModel.RemoveToast(toast.Key))">
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @onclick="@(()=> ToastsViewModel.RemoveToast(toast.Key))">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -26,7 +26,7 @@
 
     @functions {
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             //refreshing the seconds countdown
             System.Reactive.Linq.Observable.Timer(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(2000), RxApp.MainThreadScheduler)

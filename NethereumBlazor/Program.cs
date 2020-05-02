@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using System.Threading.Tasks;
 
 namespace NethereumBlazor
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-        }
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("app");
 
-        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
-                .UseBlazorStartup<Startup>();
+            Startup.ConfigureServices(builder.Services);
+
+            await builder.Build().RunAsync();
+        }
     }
 }
