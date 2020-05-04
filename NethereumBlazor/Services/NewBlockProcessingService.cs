@@ -66,7 +66,7 @@ namespace NethereumBlazor.Services
             //_timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.MainThreadScheduler)
             //    .Select(_ => Observable.FromAsync(GetLatestBlocksAsync)).Subscribe();
 
-            _timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.MainThreadScheduler)
+            _timer = Observable.Timer(TimeSpan.FromMilliseconds(500), _updateInterval, RxApp.TaskpoolScheduler)
                 .Select(_=> GetLatestBlocksAsync().ToObservable()).Concat().Subscribe();
         }
 

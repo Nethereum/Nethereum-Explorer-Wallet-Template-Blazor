@@ -8,6 +8,7 @@ using NethereumBlazor.Messages;
 using NethereumBlazor.Model;
 using NethereumBlazor.Services;
 using ReactiveUI;
+using Splat;
 
 namespace NethereumBlazor.ViewModels
 {
@@ -15,11 +16,11 @@ namespace NethereumBlazor.ViewModels
     {
         protected IAccountsService AccountsService { get; }
 
-        public SendTransactionBaseViewModel(IAccountsService accountsService)
+        public SendTransactionBaseViewModel(IAccountsService accountsService = null)
         {
-            AccountsService = accountsService;
-            this.WhenAnyValue(x => x.Account, (x) => !string.IsNullOrEmpty(x)).Select(_=>RefreshBalanceAsync().ToObservable()).Concat().Subscribe();
-            
+            AccountsService = accountsService ?? Locator.Current.GetService<IAccountsService>();
+            this.WhenAnyValue(x => x.Account, (x) => !string.IsNullOrEmpty(x)).Select(_ => RefreshBalanceAsync().ToObservable()).Concat().Subscribe();
+
             MessageBus.Current.Listen<UrlChanged>().Select(_ => RefreshBalanceAsync().ToObservable()).Concat().Subscribe();
 
             AccountsService.Accounts.Connect().Subscribe(x => { SelectFirstAccount(); });
@@ -39,7 +40,7 @@ namespace NethereumBlazor.ViewModels
             }
         }
 
-        public async Task RefreshBalanceAsync()
+        protected async Task RefreshBalanceAsync()
         {
             if (!string.IsNullOrWhiteSpace(Account))
             {

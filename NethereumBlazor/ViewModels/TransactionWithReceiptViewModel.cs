@@ -1,8 +1,11 @@
 ﻿using System.Numerics;
+using System.Reactive;
 using System.Threading.Tasks;
 using Nethereum.RPC.Eth.DTOs;
 using NethereumBlazor.Services;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace NethereumBlazor.ViewModels
 {
@@ -10,62 +13,34 @@ namespace NethereumBlazor.ViewModels
     {
         private readonly IWeb3ProviderService _web3ProviderService;
 
+        [Reactive]
+        public bool TransactionFound { get; set; }
 
-        private bool _transactionFound;
-        public bool TransactionFound
+        [Reactive]
+        public bool Loading { get; set; }
+
+        [Reactive]
+        public bool HasErrors { get; set; }
+
+        [Reactive]
+        public string Logs { get; set; }
+
+        [Reactive]
+        public BigInteger? CumulativeGasUsed { get; set; }
+
+        [Reactive]
+        public string ContractAddress { get; set; }
+
+        public ReactiveCommand<string, Unit> LoadTransactionCommand { get; }
+
+        public TransactionWithReceiptViewModel(IWeb3ProviderService web3ProviderService = null)
         {
-            get { return _transactionFound; }
-            set { this.RaiseAndSetIfChanged(ref _transactionFound, value); }
+            _web3ProviderService = web3ProviderService ?? Locator.Current.GetService<IWeb3ProviderService>();
+
+            LoadTransactionCommand = ReactiveCommand.CreateFromTask<string>(LoadTransactionAsync, outputScheduler: RxApp.TaskpoolScheduler);
         }
 
-        private bool _loading;
-        public bool Loading
-        {
-            get { return _loading; }
-            set { this.RaiseAndSetIfChanged(ref _loading, value); }
-        }
-        private bool _hasErrors;
-
-        public bool HasErrors
-        {
-            get => _hasErrors;
-
-            set => this.RaiseAndSetIfChanged(ref _hasErrors, value);
-        }
-
-        private string _logs;
-
-        public string Logs
-        {
-            get => _logs;
-
-            set => this.RaiseAndSetIfChanged(ref _logs, value);
-        }
-
-        private BigInteger? _cumulativeGasUsed;
-
-        public BigInteger? CumulativeGasUsed
-        {
-            get => _cumulativeGasUsed;
-
-            set => this.RaiseAndSetIfChanged(ref _cumulativeGasUsed, value);
-        }
-
-        private string _contractAddress;
-
-        public string ContractAddress
-        {
-            get => _contractAddress;
-
-            set => this.RaiseAndSetIfChanged(ref _contractAddress, value);
-        }
-
-        public TransactionWithReceiptViewModel(IWeb3ProviderService web3ProviderService)
-        {
-            _web3ProviderService = web3ProviderService;
-        }
-
-        public async Task LoadTransactionAsync(string transactionHash)
+        private async Task LoadTransactionAsync(string transactionHash)
         {
             try
             {
@@ -97,7 +72,7 @@ namespace NethereumBlazor.ViewModels
             }
         }
 
-        public void Initialise(TransactionReceipt transactionReceipt)
+        private void Initialise(TransactionReceipt transactionReceipt)
         {
             CumulativeGasUsed = transactionReceipt.CumulativeGasUsed;
             ContractAddress = transactionReceipt.ContractAddress;

@@ -4,6 +4,7 @@ using DynamicData;
 using NethereumBlazor.Messages;
 using NethereumBlazor.Services;
 using ReactiveUI;
+using Splat;
 
 namespace NethereumBlazor.ViewModels
 {
@@ -11,11 +12,19 @@ namespace NethereumBlazor.ViewModels
     {
         private readonly NewBlockProcessingService _newBlockProcessingService;
         private object _lockingObject = new object();
-        private bool _loading;
+        private bool _loading = true;
+        public SourceCache<BlockViewModel, string> Blocks { get; set; } = new SourceCache<BlockViewModel, string>(t => t.Number.ToString(CultureInfo.InvariantCulture));
 
-        public BlocksViewModel(NewBlockProcessingService newBlockProcessingService)
+        public bool Loading
         {
-            _newBlockProcessingService = newBlockProcessingService;
+            get { return _loading; }
+            set { this.RaiseAndSetIfChanged(ref _loading, value); }
+        }
+
+        public BlocksViewModel(NewBlockProcessingService newBlockProcessingService = null)
+        {
+            _newBlockProcessingService = newBlockProcessingService ?? Locator.Current.GetService<NewBlockProcessingService>();
+
             MessageBus.Current.Listen<UrlChanged>().Subscribe(x =>
                 {
                     lock (_lockingObject)
@@ -27,32 +36,23 @@ namespace NethereumBlazor.ViewModels
             );
 
             _newBlockProcessingService.Blocks.Connect().Subscribe(blockChanges =>
+            {
+                lock (_lockingObject)
                 {
-                    lock (_lockingObject)
+                    Loading = true;
+                    Blocks.Edit(_ =>
                     {
-                        Loading = true;
-                        Blocks.Edit(_ =>
+
+                        Blocks.Clear();
+                        foreach (var block in _newBlockProcessingService.Blocks.Items)
                         {
+                            Blocks.AddOrUpdate(new BlockViewModel(block));
+                        }
 
-                            Blocks.Clear();
-                            foreach (var block in _newBlockProcessingService.Blocks.Items)
-                            {
-                                Blocks.AddOrUpdate(new BlockViewModel(block));
-                            }
-
-                        });
-                        Loading = false;
-                    }
+                    });
+                    Loading = false;
                 }
-            );
-        }
-
-        public SourceCache<BlockViewModel, string> Blocks { get; set; } = new SourceCache<BlockViewModel, string>(t => t.Number.ToString(CultureInfo.InvariantCulture));
-
-        public bool Loading
-        {
-            get { return _loading; }
-            set { this.RaiseAndSetIfChanged(ref _loading, value); }
+            });
         }
     }
 }

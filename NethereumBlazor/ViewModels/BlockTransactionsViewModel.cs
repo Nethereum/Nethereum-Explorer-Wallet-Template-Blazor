@@ -10,6 +10,7 @@ using Nethereum.Hex.HexTypes;
 using NethereumBlazor.Messages;
 using NethereumBlazor.Services;
 using ReactiveUI;
+using Splat;
 
 namespace NethereumBlazor.ViewModels
 {
@@ -17,16 +18,15 @@ namespace NethereumBlazor.ViewModels
     {
         private readonly IWeb3ProviderService _web3ProviderService;
         private BigInteger? _blockNumber;
-        private BlockViewModel _block;
+        private BlockViewModel _block = new BlockViewModel();
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
         private bool _disposed = false;
         private bool _loading;
         private bool _blockFound;
 
-        public BlockTransactionsViewModel(IWeb3ProviderService web3ProviderService)
+        public BlockTransactionsViewModel(IWeb3ProviderService web3ProviderService = null)
         {
-            _web3ProviderService = web3ProviderService;
-            _block = new BlockViewModel();
+            _web3ProviderService = web3ProviderService ?? Locator.Current.GetService<IWeb3ProviderService>();
             MessageBus.Current.Listen<UrlChanged>().Select(x => ReloadTransactions().ToObservable()).Concat().Subscribe();
 
             this.WhenAnyValue(x => x.BlockNumber).Select(x =>
@@ -81,7 +81,7 @@ namespace NethereumBlazor.ViewModels
         {
             //Hack / Workaround prevent crashing on start up
             if (BlockNumber != null)
-            { 
+            {
 
                 var transactionViewModels = new List<TransactionViewModel>();
                 try

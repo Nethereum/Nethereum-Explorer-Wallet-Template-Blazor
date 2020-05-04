@@ -9,7 +9,7 @@ namespace NethereumBlazor.ViewModels
         private string _privateKey;
         private string _address;
         private bool _validPrivateKey;
-        
+
         public string PrivateKey
         {
             get => _privateKey;

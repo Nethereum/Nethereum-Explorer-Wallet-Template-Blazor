@@ -1,0 +1,9 @@
+﻿<button @onclick="@OnClickHandler" class="@Class">@ChildContent</button>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "btn btn-primary";
+}

@@ -1,8 +1,7 @@
 ﻿@page "/erc20Transfer"
+@inherits ReactiveComponentBase<SendErc20TransactionViewModel>
 @using Microsoft.AspNetCore.Components
 @using NethereumBlazor.ViewModels
-@using ReactiveUI
-@inject SendErc20TransactionViewModel SendTransactionViewModel
 
 <div class="card">
     <h5 class="card-header">Transfer ERC0 Token</h5>
@@ -11,48 +10,48 @@
             <label for="fromAccount" class="col-sm-1 col-form-label">From Account:</label>
             <div class="col-sm-10">
 
-                @if (SendTransactionViewModel.Accounts.Count > 1)
+                @if (ViewModel.Accounts.Count > 1)
                 {
-                    <select id="fromAccount" class="form-control mr-sm-2" bind="@SendTransactionViewModel.Account">
-                        @foreach (var account in SendTransactionViewModel.Accounts.Items)
+                    <select id="fromAccount" class="form-control mr-sm-2" bind="@ViewModel.Account">
+                        @foreach (var account in ViewModel.Accounts.Items)
                         {
                             <option value="@account.Address">@account.Address</option>
                         }
                     </select>
                 }
 
-                @if (SendTransactionViewModel.Accounts.Count == 1)
+                @if (ViewModel.Accounts.Count == 1)
                 {
-                    <input id="fromAccount" class="form-control" readonly bind="@SendTransactionViewModel.Account" type="text" />
+                    <input id="fromAccount" class="form-control" readonly bind="@ViewModel.Account" type="text" />
                 }
                 <small id="fromAccountHelp" class="form-text text-muted">The account address to transfer the Ether from</small>
                 <small class="form-text text-muted"><a href="Accounts">Load new account</a></small>
 
-                @if (SendTransactionViewModel.Accounts.Count > 0)
+                @if (ViewModel.Accounts.Count > 0)
                 {
-                    <small id="accountBalance" class="form-text text-muted">Ether Balance: @SendTransactionViewModel.EtherBalance <button class="btn-link" @onclick="@SendTransactionViewModel.RefreshBalanceAsync">Refresh</button></small>
-                    <small id="tokenBalance" class="form-text text-muted">Token Balance: @SendTransactionViewModel.TokenBalance <button class="btn-link" @onclick="@SendTransactionViewModel.RefreshTokenBalanceAsync">Refresh</button></small>
+                    <small id="accountBalance" class="form-text text-muted">Ether Balance: @ViewModel.EtherBalance <RxButton @ref="RefreshBalanceButton" Class="btn-link">Refresh</RxButton></small>
+                    <small id="tokenBalance" class="form-text text-muted">Token Balance: @ViewModel.TokenBalance <RxButton @ref="RefreshTokenBalanceButton" Class="btn-link">Refresh</RxButton></small>
                 }
             </div>
         </div>
         <div class="form-group row">
             <label for="" class="col-sm-1 col-form-label">Contract Address:</label>
             <div class="col-sm-10">
-                <input id="TokenContractAddress" class="form-control" bind="@SendTransactionViewModel.ContractAddress" type="text" />
+                <input id="TokenContractAddress" class="form-control" bind="@ViewModel.ContractAddress" type="text" />
                 <small id="TokenContractAddressHelp" class="form-text text-muted">The ERC20 contract address</small>
             </div>
         </div>
         <div class="form-group row">
             <label for="" class="col-sm-1 col-form-label">Decimal Places:</label>
             <div class="col-sm-10">
-                <input id="TokenDecimalPlaces" class="form-control" bind="@SendTransactionViewModel.DecimalPlaces" type="text" />
+                <input id="TokenDecimalPlaces" class="form-control" bind="@ViewModel.DecimalPlaces" type="text" />
                 <small id="TokenDecimalPlacesHelp" class="form-text text-muted">The number of decimal places of ERC20 Token</small>
             </div>
         </div>
         <div class="form-group row">
             <label for="toAccount" class="col-sm-1 col-form-label">To Account:</label>
             <div class="col-sm-10">
-                <input id="toAccount" class="form-control" bind="@SendTransactionViewModel.TransferTo" type="text" />
+                <input id="toAccount" class="form-control" bind="@ViewModel.TransferTo" type="text" />
                 <small id="toAccountHelp" class="form-text text-muted">The account address to transfer the token to</small>
             </div>
         </div>
@@ -60,7 +59,7 @@
         <div class="form-group row">
             <label for="etherAmount" class="col-sm-1 col-form-label">Token Amount:</label>
             <div class="col-sm-10">
-                <input id="tokenAmount" class="form-control" bind="@SendTransactionViewModel.TokenAmount" type="text" />
+                <input id="tokenAmount" class="form-control" bind="@ViewModel.TokenAmount" type="text" />
                 <small id="tokenAmountHelp" class="form-text text-muted">The token amount to transfer</small>
             </div>
         </div>
@@ -68,22 +67,22 @@
         <div class="form-group row">
             <label for="etherAmount" class="col-sm-1 col-form-label">Ether Amount (Optional):</label>
             <div class="col-sm-10">
-                <input id="etherAmount" class="form-control" bind="@SendTransactionViewModel.AmountInEther" type="text" />
+                <input id="etherAmount" class="form-control" bind="@ViewModel.AmountInEther" type="text" />
                 <small id="etherAmountHelp" class="form-text text-muted">The optional Ether amount to transfer at the same time as the token</small>
             </div>
         </div>
         <div class="form-group row">
             <label for="gasPrice" class="col-sm-1 col-form-label">Gas Price:</label>
             <div class="col-sm-10">
-                <input id="gasPrice" class="form-control" bind="@SendTransactionViewModel.GasPrice" type="text" />
+                <input id="gasPrice" class="form-control" bind="@ViewModel.GasPrice" type="text" />
                 <small id="gasPriceHelp" class="form-text text-muted">The optional gas price in GWei</small>
                 <br />
-                <button @onclick="@TransferTokenAsync" class="btn btn-primary">Transfer Token</button>
+                <RxButton @ref="TransferTokenButton" class="btn btn-primary">Transfer Token</RxButton>
             </div>
         </div>
 
-        <div><a href="/transaction/@LatestTransactionHash"> @LatestTransactionHash</a></div>
-        
+        <div><a href="/transaction/@ViewModel.LatestTransactionHash"> @ViewModel.LatestTransactionHash</a></div>
+
         <div class="alert alert-danger" role="alert">
             <strong>Warning:</strong> This application is targeted to <strong>developers and experimental</strong>. If you intend to use this application to make a transfer in <strong>Mainnet</strong>, please download it from <a href="https://github.com/Nethereum/NethereumBlazor" class="alert-link" target="_blank">Github</a>, to validate the source and run it locally.
         </div>
@@ -93,7 +92,6 @@
 
 
 @functions {
-
     //workaround search for the time being
     [Parameter]
     public string BlockNumber { get; set; }
@@ -101,42 +99,8 @@
     [Parameter]
     public string TransactionHash { get; set; }
 
-
     protected void SelectedAccountChange(ChangeEventArgs accountChangeEventArgs)
     {
-        SendTransactionViewModel.Account = (string)accountChangeEventArgs.Value;
-
+        ViewModel.Account = (string)accountChangeEventArgs.Value;
     }
-
-    public static string TruncateEllipse(string value, int maxChars)
-    {
-        return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
-    }
-
-    public string LatestTransactionHash { get; set; }
-
-    async Task TransferTokenAsync()
-    {
-        LatestTransactionHash = await SendTransactionViewModel.SendTokenAsync();
-    }
-
-
-    protected override void OnInitialized()
-    {
-        SendTransactionViewModel.Accounts.Connect().Subscribe(_ => StateHasChanged());
-
-        SendTransactionViewModel.WhenAnyValue(x => x.Account).Subscribe(_ => Console.WriteLine(SendTransactionViewModel.Account));
-
-        SendTransactionViewModel.WhenAnyValue(x => x.EtherBalance).Subscribe(_ =>
-        {
-            StateHasChanged();
-        });
-
-        SendTransactionViewModel.WhenAnyValue(x => x.TokenBalance).Subscribe(_ =>
-        {
-            StateHasChanged();
-        });
-    }
-
-
 }

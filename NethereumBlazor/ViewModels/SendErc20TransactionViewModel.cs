@@ -1,90 +1,62 @@
 ﻿using System;
-using System.Numerics;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using Nethereum.ABI.FunctionEncoding.Attributes;
-using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Util;
 using Nethereum.Web3;
 using NethereumBlazor.Messages;
 using NethereumBlazor.Services;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace NethereumBlazor.ViewModels
 {
     public class SendErc20TransactionViewModel : SendTransactionBaseViewModel
     {
-        private string _contractAddress;
+        private ObservableAsPropertyHelper<string> _latestTransactionHash;
 
-        public string ContractAddress
+        [Reactive]
+        public string ContractAddress { get; set; }
+
+        [Reactive]
+        public string TransferTo { get; set; }
+
+        [Reactive]
+        public decimal TokenAmount { get; set; }
+
+        [Reactive]
+        public decimal TokenBalance { get; set; }
+
+        [Reactive]
+        public int DecimalPlaces { get; set; }
+
+        public string LatestTransactionHash { get => _latestTransactionHash.Value; }
+
+        public ReactiveCommand<Unit, Unit> RefreshBalanceCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> RefreshTokenBalanceCommand { get; }
+
+        public ReactiveCommand<Unit, string> SendTokenCommand { get; }
+
+        public SendErc20TransactionViewModel(IAccountsService accountsService = null) : base(accountsService)
         {
-            get => _contractAddress;
-            set => this.RaiseAndSetIfChanged(ref _contractAddress, value);
+            DecimalPlaces = 18;
+
+            this.WhenAnyValue(x => x.Account, x => x.ContractAddress, (x, y) => !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y)).Select(_ =>
+                  RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
+
+            MessageBus.Current.Listen<UrlChanged>().Select(_ => RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
+
+            RefreshBalanceCommand = ReactiveCommand.CreateFromTask(RefreshBalanceAsync, outputScheduler: RxApp.TaskpoolScheduler);
+            RefreshTokenBalanceCommand = ReactiveCommand.CreateFromTask(RefreshTokenBalanceAsync, outputScheduler: RxApp.TaskpoolScheduler);
+            SendTokenCommand = ReactiveCommand.CreateFromTask(SendTokenAsync, outputScheduler: RxApp.TaskpoolScheduler);
+
+            _latestTransactionHash = SendTokenCommand.ToProperty(this, nameof(LatestTransactionHash));
         }
 
-        private string _transferTo;
-
-        public string TransferTo
-        {
-            get => _transferTo;
-            set => this.RaiseAndSetIfChanged(ref _transferTo, value);
-        }
-
-        private decimal _tokenAmount;
-
-        public decimal TokenAmount
-        {
-            get => _tokenAmount;
-            set => this.RaiseAndSetIfChanged(ref _tokenAmount, value);
-        }
-
-
-        private decimal _tokenBalance;
-
-        public decimal TokenBalance
-        {
-            get => _tokenBalance;
-            set => this.RaiseAndSetIfChanged(ref _tokenBalance, value);
-        }
-
-        private int _decimalPlaces;
-
-        public int DecimalPlaces
-        {
-            get => _decimalPlaces;
-            set => this.RaiseAndSetIfChanged(ref _decimalPlaces, value);
-        }
-
-        protected ReactiveCommand<Unit, string> _executeTrasnactionCommand;
-        //Does not work / threading issue
-        public ReactiveCommand<Unit, string> ExecuteTransactionCommand => this._executeTrasnactionCommand;
-
-        public SendErc20TransactionViewModel(IAccountsService accountsService) : base(accountsService)
-        {
-            _decimalPlaces = 18;
-
-            this.WhenAnyValue(x => x.Account, x => x.ContractAddress, (x,y) => !string.IsNullOrEmpty(x) && !string.IsNullOrEmpty(y)).Select(_ =>
-                 RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
-
-            MessageBus.Current.Listen<UrlChanged>().Select( _=> RefreshTokenBalanceAsync().ToObservable()).Concat().Subscribe();
-            /* Does not work threading
-            var canExecuteTransaction = this.WhenAnyValue(
-                x => x.AddressTo,
-                x => x.Account,
-                (addressTo, account) =>
-                    Utils.IsValidAddress(addressTo) &&
-                    Utils.IsValidAddress(account));
-
-
-            this._executeTrasnactionCommand = ReactiveCommand.CreateFromTask(SendTokenAsync, canExecuteTransaction);
-            */
-        }
-
-        public async Task RefreshTokenBalanceAsync()
+        private async Task RefreshTokenBalanceAsync()
         {
             if (!string.IsNullOrWhiteSpace(Account) && !string.IsNullOrWhiteSpace(ContractAddress))
             {
@@ -92,7 +64,7 @@ namespace NethereumBlazor.ViewModels
             }
         }
 
-        public async Task<string> SendTokenAsync()
+        private async Task<string> SendTokenAsync()
         {
             var transferFunction =
                 new TransferFunction()
@@ -113,11 +85,8 @@ namespace NethereumBlazor.ViewModels
             if (Nonce != null)
                 transferFunction.Nonce = new HexBigInteger(Nonce.Value);
 
-            
+
             return await AccountsService.SendTransactionAsync(ContractAddress, transferFunction).ConfigureAwait(false);
         }
     }
-
-
-   
 }

@@ -1,77 +1,73 @@
 ﻿@page "/transaction/{transactionHash}"
-@inject TransactionWithReceiptViewModel TransactionWithReceiptViewModel
-@using System
-@using System.Numerics
-@using System.Threading.Tasks
+@inherits ReactiveComponentBase<TransactionWithReceiptViewModel>
 @using Microsoft.AspNetCore.Components
 @using NethereumBlazor.ViewModels
-@using ReactiveUI
 
 <div class="card">
     <div class="card-header">
         <div class="d-flex align-items-center">
             <h5>Transaction: @TransactionHash</h5>
-            @if (TransactionWithReceiptViewModel.Loading)
+            @if (ViewModel.Loading)
             {
                 <div class="spinner-grow spinner-grow-sm ml-auto" role="status" aria-hidden="true"></div>
             }
         </div>
     </div>
     <div class="card-body">
-        @if (!TransactionWithReceiptViewModel.Loading && TransactionWithReceiptViewModel.TransactionFound)
+        @if (!ViewModel.Loading && ViewModel.TransactionFound)
         {
 
             <table class="table table-responsive-sm">
                 <tr>
                     <th class="thead-dark" scope="row">Block Number:</th>
-                    <td><a href="/block/@TransactionWithReceiptViewModel.BlockNumber">@TransactionWithReceiptViewModel.BlockNumber</a></td>
+                    <td><a href="/block/@ViewModel.BlockNumber">@ViewModel.BlockNumber</a></td>
                 </tr>
                 <tr>
                     <th scope="row">Index:</th>
-                    <td>@TransactionWithReceiptViewModel.Index</td>
+                    <td>@ViewModel.Index</td>
                 </tr>
                 <tr>
                     <th scope="row">From:</th>
-                    <td>@TransactionWithReceiptViewModel.From</td>
+                    <td>@ViewModel.From</td>
                 </tr>
                 <tr>
                     <th scope="row">To:</th>
-                    <td>@TransactionWithReceiptViewModel.To</td>
+                    <td>@ViewModel.To</td>
                 </tr>
                 <tr>
                     <th scope="row">Amount:</th>
-                    <td>@TransactionWithReceiptViewModel.Amount</td>
+                    <td>@ViewModel.Amount</td>
                 </tr>
                 <tr>
                     <th scope="row">Nonce:</th>
-                    <td>@TransactionWithReceiptViewModel.Nonce</td>
+                    <td>@ViewModel.Nonce</td>
                 </tr>
                 <tr>
                     <th scope="row">New Contract address:</th>
-                    <td>@TransactionWithReceiptViewModel.ContractAddress</td>
+                    <td>@ViewModel.ContractAddress</td>
                 </tr>
                 <tr style="height: 200px">
                     <th scope="row">Data:</th>
-                    <td style="max-width: 300px"><small style="word-wrap: break-word">@TransactionWithReceiptViewModel.Data</small></td>
+                    <td style="max-width: 300px"><small style="word-wrap: break-word">@ViewModel.Data</small></td>
                 </tr>
                 <tr>
                     <th scope="row">Cumulative Gas Used:</th>
-                    <td>@TransactionWithReceiptViewModel.CumulativeGasUsed</td>
+                    <td>@ViewModel.CumulativeGasUsed</td>
                 </tr>
                 <tr>
                     <th scope="row">Gas:</th>
-                    <td>@TransactionWithReceiptViewModel.Gas</td>
+                    <td>@ViewModel.Gas</td>
                 </tr>
                 <tr>
                     <th scope="row">Gas Price:</th>
-                    <td>@TransactionWithReceiptViewModel.GasPrice</td>
+                    <td>@ViewModel.GasPrice</td>
                 </tr>
                 <tr style="height: 200px">
                     <th scope="row">Logs:</th>
-                    <td style="max-width: 300px"><small style="word-wrap: break-word">@TransactionWithReceiptViewModel.Logs</small></td>
+                    <td style="max-width: 300px"><small style="word-wrap: break-word">@ViewModel.Logs</small></td>
                 </tr>
             </table>
-            @if (TransactionWithReceiptViewModel.HasErrors)
+            @if (ViewModel.HasErrors)
             {
                 <div class="alert alert-danger" role="alert">
                     Transaction status failed and was reverted
@@ -80,29 +76,18 @@
 
         }
 
-        @if (!TransactionWithReceiptViewModel.Loading && !TransactionWithReceiptViewModel.TransactionFound)
+        @if (!ViewModel.Loading && !ViewModel.TransactionFound)
         {
             <div>No Transaction Found</div>
         }
     </div>
 </div>
 
-
-
 @functions {
+    //workaround search for the time being
+    [Parameter]
+    public string BlockNumber { get; set; }
 
-//workaround search for the time being
-[Parameter]
-public string BlockNumber { get; set; }
-
-[Parameter]
-public string TransactionHash { get; set; }
-
-
-
-protected override async Task OnParametersSetAsync()
-{
-    await TransactionWithReceiptViewModel.LoadTransactionAsync(TransactionHash);
-    TransactionWithReceiptViewModel.WhenAnyValue(x => x.Loading).Subscribe((x) => StateHasChanged());
-}
+    [Parameter]
+    public string TransactionHash { get; set; }
 }

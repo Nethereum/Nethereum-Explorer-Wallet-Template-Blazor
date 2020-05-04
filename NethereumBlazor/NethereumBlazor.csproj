@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.0-rc1.20223.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.0-rc1.20223.4" PrivateAssets="all" />
     <PackageReference Include="Nethereum.Web3" Version="3.7.1" />
-    <PackageReference Include="ReactiveUI" Version="11.3.8" />
     <PackageReference Include="ReactiveUI.Blazor" Version="11.3.8" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.3.8" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0-rc1.20217.1" />
   </ItemGroup>
 

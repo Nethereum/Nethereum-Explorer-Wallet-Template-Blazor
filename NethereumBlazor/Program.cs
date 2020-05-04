@@ -12,7 +12,11 @@ namespace NethereumBlazor
 
             Startup.ConfigureServices(builder.Services);
 
-            await builder.Build().RunAsync();
+            var host = builder.Build();
+
+            Startup.ConfigureRxServices(host.Services);
+
+            await host.RunAsync();
         }
     }
 }

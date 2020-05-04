@@ -1,20 +1,33 @@
-﻿using System.Threading.Tasks;
+﻿using System.Reactive;
+using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Util;
 using Nethereum.Web3;
 using NethereumBlazor.Services;
+using ReactiveUI;
 
 namespace NethereumBlazor.ViewModels
 {
     public class SendTransactionViewModel : SendTransactionBaseViewModel
     {
-        public SendTransactionViewModel(IAccountsService accountsService) : base(accountsService)
-        {
+        private ObservableAsPropertyHelper<string> _latestTransactionHash;
 
+        public string LatestTransactionHash { get => _latestTransactionHash.Value; }
+
+        public ReactiveCommand<Unit, Unit> RefreshBalanceCommand { get; }
+
+        public ReactiveCommand<Unit, string> SendTransactionCommand { get; }
+
+        public SendTransactionViewModel(IAccountsService accountsService = null) : base(accountsService)
+        {
+            RefreshBalanceCommand = ReactiveCommand.CreateFromTask(RefreshBalanceAsync, outputScheduler: RxApp.TaskpoolScheduler);
+            SendTransactionCommand = ReactiveCommand.CreateFromTask(SendTransactionAsync, outputScheduler: RxApp.TaskpoolScheduler);
+
+            _latestTransactionHash = SendTransactionCommand.ToProperty(this, nameof(LatestTransactionHash));
         }
 
-        public async Task<string> SendTransactionAsync()
+        private async Task<string> SendTransactionAsync()
         {
             var transactionInput =
                 new TransactionInput
@@ -36,7 +49,7 @@ namespace NethereumBlazor.ViewModels
             if (!string.IsNullOrEmpty(Data))
                 transactionInput.Data = Data;
 
-           return await AccountsService.SendTransactionAsync(transactionInput).ConfigureAwait(false);
+            return await AccountsService.SendTransactionAsync(transactionInput).ConfigureAwait(false);
         }
     }
 }

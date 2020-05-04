@@ -1,0 +1,9 @@
+﻿<input id="@Id" class="@Class" type="text" @bind="Text"/>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "form-control";
+}
