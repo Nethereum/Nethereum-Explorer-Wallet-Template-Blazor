@@ -50,6 +50,7 @@ namespace NethereumBlazor
             Locator.CurrentMutable.Register(() => web3ServiceProvider, typeof(IWeb3ProviderService));
             Locator.CurrentMutable.Register(() => accountsService, typeof(IAccountsService));
             Locator.CurrentMutable.Register(() => newBlockProcessingService, typeof(NewBlockProcessingService));
+            Locator.CurrentMutable.RegisterConstant(new ConsoleLogger(), typeof(ILogger));
         }
     }
 }

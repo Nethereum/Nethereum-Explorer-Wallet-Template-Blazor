@@ -7,7 +7,7 @@ using System.Reactive;
 
 namespace NethereumBlazor.ViewModels
 {
-    public class AccountsViewModel : ReactiveObject
+    public class AccountsViewModel : ReactiveObject, IEnableLogger
     {
         private readonly IAccountsService _accountsService;
 
@@ -25,6 +25,8 @@ namespace NethereumBlazor.ViewModels
 
             AddNewAccount = ReactiveCommand.Create(() =>
             {
+                this.Log().Info("Adding new account");
+
                 if (NewAccount.ValidPrivateKey)
                 {
                     var newAccountInfo = new AccountInfo()
@@ -35,6 +37,8 @@ namespace NethereumBlazor.ViewModels
                     _accountsService.AddAccount(newAccountInfo, NewAccount.PrivateKey);
                     NewAccount.Clear();
                 }
+
+                this.Log().Info("Failed new account");
             });
         }
 
