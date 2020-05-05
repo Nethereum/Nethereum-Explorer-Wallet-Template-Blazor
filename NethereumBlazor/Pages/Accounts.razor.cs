@@ -1,5 +1,4 @@
 ﻿using NethereumBlazor.Components;
-//using NethereumBlazor.Extensions;
 using NethereumBlazor.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
