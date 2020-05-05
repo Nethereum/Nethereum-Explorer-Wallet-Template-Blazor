@@ -14,9 +14,8 @@
         <div class="form-group row">
             <label for="privateKey" class="col-sm-1 col-form-label">Private key:</label>
             <div class="col-sm-10">
-                <RxTextInput @ref="RxTextInput" Id="privateKey" />
+                <RxTextInput @ref="PrivateKey" Id="privateKey" />
                 <small id="privateKeyUrlHelp" class="form-text text-muted">Enter the private key to add a new account, for example: "0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7" or "0xb5b2324bf02d491b087dd6485019daf38882e3ac2d59e96d44251a6705cabb9a"</small>
-
 
                 <RxButton @ref="AddAccountBtn">Add Account</RxButton>
                 <div class="alert alert-danger" style="margin-top: 10px" role="alert">

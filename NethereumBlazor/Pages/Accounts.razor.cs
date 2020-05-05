@@ -1,6 +1,8 @@
 ﻿using NethereumBlazor.Components;
+//using NethereumBlazor.Extensions;
 using NethereumBlazor.ViewModels;
 using ReactiveUI;
+using ReactiveUI.Validation.Extensions;
 
 namespace NethereumBlazor.Pages
 {
@@ -8,7 +10,7 @@ namespace NethereumBlazor.Pages
     {
         private RxButton AddAccountBtn { get; set; }
 
-        private RxTextInput RxTextInput { get; set; }
+        private RxTextInput PrivateKey { get; set; }
 
         public Accounts()
         {
@@ -21,8 +23,9 @@ namespace NethereumBlazor.Pages
 
             if (isFirstRender)
             {
-                this.BindCommand(ViewModel, vm => vm.AddNewAccount, v => v.AddAccountBtn);
-                this.Bind(ViewModel, vm => vm.NewAccount.PrivateKey, v => v.RxTextInput.Text);
+                this.BindCommand(ViewModel, vm => vm.AddNewAccountCommand, v => v.AddAccountBtn);
+                this.Bind(ViewModel, vm => vm.PrivateKey, v => v.PrivateKey.Text);
+                this.BindValidation(ViewModel, v => v.PrivateKey.Error);
             }
         }
     }

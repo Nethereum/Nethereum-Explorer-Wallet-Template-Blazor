@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace NethereumBlazor.Components
 {
@@ -20,5 +18,7 @@ namespace NethereumBlazor.Components
                 StateHasChanged();
             }
         }
+
+        public string Error { get; set; }
     }
 }

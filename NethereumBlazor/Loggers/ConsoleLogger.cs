@@ -6,7 +6,7 @@ namespace NethereumBlazor.Loggers
 {
     public class ConsoleLogger : ILogger
     {
-        public LogLevel Level => throw new NotImplementedException();
+        public LogLevel Level => LogLevel.Info;
 
         public void Write([Localizable(false)] string message, LogLevel logLevel)
         {

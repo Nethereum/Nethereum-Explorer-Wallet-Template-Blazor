@@ -12,7 +12,7 @@ namespace NethereumBlazor.ViewModels
     {
         private readonly NewBlockProcessingService _newBlockProcessingService;
         private object _lockingObject = new object();
-        private bool _loading = true;
+        private bool _loading;
         public SourceCache<BlockViewModel, string> Blocks { get; set; } = new SourceCache<BlockViewModel, string>(t => t.Number.ToString(CultureInfo.InvariantCulture));
 
         public bool Loading
