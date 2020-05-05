@@ -38,7 +38,7 @@ namespace NethereumBlazor.ViewModels
                     NewAccount.Clear();
                 }
 
-                this.Log().Info("Failed new account");
+                this.Log().Info("Failed add new account");
             });
         }
 
