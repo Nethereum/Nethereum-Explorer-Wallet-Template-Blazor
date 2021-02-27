@@ -3,25 +3,17 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
+    background: #FFFAFB
 }
 
 
-.grid-table {
-    width: 100%;
-    display: table;
-    border-spacing: 0;
-    border-collapse: collapse;
-}
-
-.grid-table-head {
-    background-color: rgb(136, 108, 144);
+.table-head {
+    background-color: #5E6057;
     color: whitesmoke;
-    font-size: 0.9rem;
-    text-align: center;
     padding: 4px 56px 4px 24px;
 }
 
-.grid-table-row {
+.table-row {
     color: inherit;
     height: 35px;
     display: table-row;
@@ -30,30 +22,34 @@ html, body {
 }
 
 
-.grid-table-cell {
+.table-cell {
     display: table-cell;
     padding: 4px 56px 4px 24px;
     border-bottom: 1px solid rgba(224, 224, 224, 1);
     vertical-align: inherit;
     font-weight: 400;
-    text-align: right;
+    text-align: left;
     flex-direction: row-reverse;
 }
 
 
-.grid.table-cell-head {
+.table-cell-head {
     color: whitesmoke;
     font-weight: 500;
+    font-size: 1.2rem;
+    text-align: left;
 }
 
-.grid-table-head-row {
+.table-head-row {
     height: 40px;
     display: table-row;
     outline: none;
     vertical-align: middle;
 }
+
+
 .card-header {
-    background-color: #160e60;
+    background-color: #4E5656;
     color: whitesmoke;
     font-size: 1.3rem;
 }
@@ -62,11 +58,9 @@ html, body {
     color: #fff;
     float: left;
     text-align: center;
-    /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
-    background-color: #8c8cce;
+    background-color: #5E6057;
     margin: 7px 13px 0 0;
     padding: 7px 10px 4px;
-    /*background: gray;*/
     width: 155px;
     height: 85px;
     margin-top: 2px;

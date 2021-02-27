@@ -4,12 +4,16 @@
     flex-direction: column;
 }
 
+.content {
+    padding-top: 1.1rem;
+}
+
 .main {
     flex: 1;
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, #339989 0%, #7DE2D1 70%);
 }
 
 .top-row {
@@ -18,7 +22,7 @@
     justify-content: flex-end;
     height: 3.5rem;
     display: flex;
-    align-items: center;
+    align-items: end;
 }
 
 .top-row ::deep a, .top-row .btn-link {

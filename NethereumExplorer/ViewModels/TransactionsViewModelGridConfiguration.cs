@@ -20,16 +20,6 @@ namespace NethereumExplorer.ViewModels
             builder.Property(e => e.Index).IsSortable();
 
 
-            builder.UseCssClasses(conf =>
-            {
-                conf.Table = "grid-table";
-                conf.TableBody = "grid-table-body";
-                conf.TableCell = "grid-table-cell";
-                conf.TableHeader = "grid-table-head";
-                conf.TableHeaderCell = "grid-table-cell-head";
-                conf.TableHeaderRow = "grid-table-head-row";
-                conf.TableRow = "grid-table-row";
-            });
         }
     }
 }
