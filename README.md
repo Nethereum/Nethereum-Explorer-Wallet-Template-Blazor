@@ -23,5 +23,5 @@ One of the main goals is to eventually have full support of ReactiveUI as the co
 Avalonia Desktop (Windows, Linux, Mac): https://github.com/Nethereum/Nethereum.UI.Desktop, WindowsForms https://github.com/Nethereum/Nethereum.SimpleWindowsWallet
 Xamarin.Forms Mobile and Desktop wallets:  https://github.com/Nethereum/Nethereum.UI.Wallet.Sample
 
-ReactiveUI is now fully supported in Blazor, the orginal hope of this project was to provide an experimental context to enable all ReactiveUI features in Blazor to be shared across all the other frontend frameworks.
+ReactiveUI is now fully supported in Blazor, the orginal hope of this project was to provide an experimental context to enable all ReactiveUI features in Blazor to be shared across all the other frontend frameworks. Thanks to the magic of the ReactiveUI team now we can do that :D 
 
