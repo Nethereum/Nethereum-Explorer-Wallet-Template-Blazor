@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumBlazor", "NethereumBlazor\NethereumBlazor.csproj", "{D4DECE2E-013F-421A-8C43-69A534E38095}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer", "NethereumExplorer\NethereumExplorer.csproj", "{253570F4-BD3B-4706-B7B7-17AB498B1CDA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{F9592B9B-2613-471B-8386-D27CF929D5D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D4DECE2E-013F-421A-8C43-69A534E38095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4DECE2E-013F-421A-8C43-69A534E38095}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4DECE2E-013F-421A-8C43-69A534E38095}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4DECE2E-013F-421A-8C43-69A534E38095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253570F4-BD3B-4706-B7B7-17AB498B1CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253570F4-BD3B-4706-B7B7-17AB498B1CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253570F4-BD3B-4706-B7B7-17AB498B1CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253570F4-BD3B-4706-B7B7-17AB498B1CDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9592B9B-2613-471B-8386-D27CF929D5D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9592B9B-2613-471B-8386-D27CF929D5D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9592B9B-2613-471B-8386-D27CF929D5D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9592B9B-2613-471B-8386-D27CF929D5D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

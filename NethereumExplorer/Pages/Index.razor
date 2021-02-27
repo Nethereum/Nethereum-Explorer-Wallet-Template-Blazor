@@ -1,0 +1,26 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <LatestBlocks />
+        </div>
+        <div class="col">
+            <LatestBlockTransactions />
+        </div>
+    </div>
+</div>
+
+@code {
+
+    //workaround search for the time being
+    [Parameter]
+    public string BlockNumber { get; set; }
+
+    [Parameter]
+    public string TransactionHash { get; set; }
+
+}
+

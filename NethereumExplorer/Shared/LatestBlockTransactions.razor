@@ -1,0 +1,59 @@
+﻿@using ReactiveUI;
+@using NethereumExplorer.ViewModels
+
+@inject LatestBlockTransactionsViewModel LatestBlockTransactionsViewModel
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex align-items-center">
+            <h5>Transactions</h5>
+            @if (LatestBlockTransactionsViewModel.Loading)
+            {
+                <div class="spinner-grow spinner-grow-sm ml-auto" role="status" aria-hidden="true"></div>
+            }
+
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (var transaction in LatestBlockTransactionsViewModel.Transactions.Items.OrderBy(x => x.Index).Take(10))
+        {
+            <div class="latest-block">
+                <div class="latest-block-highlight">
+                    <span>Block @transaction.BlockNumber</span>
+                    <small>
+                        <div>Index: @transaction.Index</div>
+                    </small>
+                    <small>
+                        <div>Gas: @transaction.Gas</div>
+                    </small>
+                </div>
+                <div>
+                    Hash: @TruncateEllipse(transaction.TransactionHash, 40)
+                    <small>
+                        <div>From: @transaction.From</div>
+                    </small>
+                    <small>
+                        <div>To: @transaction.To</div>
+                    </small>
+                    <smal>Ether: @transaction.Amount</smal>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+protected override void OnInitialized()
+{
+
+    LatestBlockTransactionsViewModel.Transactions.Connect().Subscribe(_ => StateHasChanged());
+
+    LatestBlockTransactionsViewModel.WhenAnyValue(x => x.Loading).Subscribe(_ => StateHasChanged());
+}
+
+public static string TruncateEllipse(string value, int maxChars)
+{
+    return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+}
+
+}
