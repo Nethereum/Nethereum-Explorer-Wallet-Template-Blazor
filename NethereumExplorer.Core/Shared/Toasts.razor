@@ -1,0 +1,46 @@
+﻿@using ReactiveUI;
+@using NethereumExplorer.ViewModels
+@inject ToastsViewModel ToastsViewModel
+
+
+<div style="position: absolute; top: 0; right: 0;">
+    @foreach (var toast in ToastsViewModel.Toasts.Items)
+    {
+        <div class="toast" style="opacity: 100">
+            <div class="toast-header">
+                <img src="_content/NethereumExplorer.Core/images/logo192x192.png" width="20" height="20"
+                     class="rounded mr-2" alt="...">
+                <strong class="mr-auto">@toast.Title</strong>
+                <small>@string.Format(@"> {0:mm} mins {0:ss} secs ago", (DateTime.Now - toast.Received))</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @onclick="@(()=> ToastsViewModel.RemoveToast(toast.Key))">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body @(toast.Failed ? "alert-danger" : "alert-light")">
+                <a href="@toast.RelativeLink" class="alert-link">@toast.LinkMessage</a>
+                <small>@toast.Message</small>
+            </div>
+        </div>
+    }
+</div>
+
+    @code {
+
+        protected override void OnInitialized()
+        {
+            //refreshing the seconds countdown
+        
+            System.Reactive.Linq.Observable.Timer(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(2000))
+                .SubscribeAndNotifyStateChanges(a => InvokeAsync(a),
+                    () =>
+                        {
+                            if (ToastsViewModel.Toasts.Count > 0)
+                            {
+                                StateHasChanged();
+                            }
+                        }
+                    );
+					
+            ToastsViewModel.Toasts.Connect().SubscribeAndNotifyStateChanges(InvokeAsync, StateHasChanged);
+        }
+    }

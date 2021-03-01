@@ -1,29 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <EnableDefaultCssItems>false</EnableDefaultCssItems>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.FlexGrid" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.MobileBlazorBindings" Version="0.6.69-preview" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
     <PackageReference Include="Nethereum.Web3" Version="3.8.0" />
     <PackageReference Include="ReactiveUI" Version="13.1.1" />
-    <PackageReference Include="ReactiveUI.Blazor" Version="13.1.1" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
-
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <ProjectReference Include="..\NethereumExplorer.Core\NethereumExplorer.Core.csproj" />
   </ItemGroup>
-
 </Project>
