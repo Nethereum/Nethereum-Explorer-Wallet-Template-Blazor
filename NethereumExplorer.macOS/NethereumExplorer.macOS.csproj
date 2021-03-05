@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Resources\wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -107,5 +108,11 @@
       <Project>{8F35B0DE-B367-4378-B33E-957CA43CA6F8}</Project>
       <Name>NethereumExplorer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\wwwroot\images\logo192x192t.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </BundleResource>
   </ItemGroup>
 </Project>
