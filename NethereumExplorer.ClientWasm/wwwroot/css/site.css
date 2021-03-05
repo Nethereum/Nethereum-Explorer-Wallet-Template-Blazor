@@ -66,7 +66,7 @@ app {
 
     .sidebar .oi {
         width: 2rem;
-        font-size: 1.1rem;
+        font-size: 1.5rem;
         vertical-align: text-top;
         top: -2px;
     }
@@ -85,7 +85,7 @@ app {
         }
 
         .sidebar .nav-item a {
-            color: #d7d7d7;
+            color: #4E5656;
             border-radius: 4px;
             height: 3rem;
             display: flex;
@@ -164,6 +164,7 @@ app {
     .page {
         flex-direction: row;
     }
+
     .sidebar {
         width: 250px;
         height: 100vh;
