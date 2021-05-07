@@ -1,6 +1,6 @@
 # Nethereum Explorer
 
-Nethereum Explorer is a .Net Blazor Wasm SPA, Desktop Windows and Mac, Android and iOS light blockchain explorer and simple wallet.
+Nethereum Explorer is a .Net Blazor Wasm SPA, Desktop Windows and Mac, Android and iOS light blockchain explorer and simple wallet Template.
 
 You can try it here: http://blazor.nethereum.com
 
