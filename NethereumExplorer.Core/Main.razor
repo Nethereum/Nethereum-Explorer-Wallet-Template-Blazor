@@ -1,10 +1,10 @@
-﻿<Router AppAssembly="@GetType().Assembly"
-AdditionalAssemblies="new[] { typeof(NethereumExplorer.Core.Shared.MainLayout).Assembly}">
+﻿@using NethereumExplorer.Core.Shared
+<Router AppAssembly="@GetType().Assembly">
 	<Found Context="routeData">
-		<RouteView RouteData="@routeData" DefaultLayout="@typeof(NethereumExplorer.Core.Shared.MainLayout)" />
+		<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
 	</Found>
 	<NotFound>
-		<LayoutView Layout="@typeof(NethereumExplorer.Core.Shared.MainLayout)">
+		<LayoutView Layout="@typeof(MainLayout)">
 			<p>Sorry, there's nothing at this address.</p>
 		</LayoutView>
 	</NotFound>
