@@ -31,7 +31,7 @@ namespace NethereumExplorer.Server
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            //NOTE: Server side singleton, just for local usage, you would not want to use the Account services in server mode
+            //NOTE: Server side singleton, just for local usage and sample, you would not want to use the Account services in server mode
             /// use the Metamask integration in other templates
             
             var web3ServiceProvider = new Web3ProviderService();

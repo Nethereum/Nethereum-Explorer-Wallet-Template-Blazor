@@ -18,7 +18,7 @@
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
-    <PackageReference Include="Nethereum.Web3" Version="3.8.0" />
+    <PackageReference Include="Nethereum.Web3" Version="4.1.1" />
     <PackageReference Include="ReactiveUI" Version="13.1.1" />
   </ItemGroup>
 

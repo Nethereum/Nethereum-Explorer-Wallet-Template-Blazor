@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.0.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 16.0.0.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer", "NethereumExplorer\NethereumExplorer.csproj", "{8F35B0DE-B367-4378-B33E-957CA43CA6F8}"
 EndProject
@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer.Core", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer.ClientWasm", "NethereumExplorer.ClientWasm\NethereumExplorer.ClientWasm.csproj", "{30B39CB7-ADA9-4FE5-BDFE-867C3C5DCC8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NethereumExplorer.Server", "NethereumExplorer.Server\NethereumExplorer.Server.csproj", "{AD170AB1-F7BD-4F2D-BD50-6D6F1141DAC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer.Server", "NethereumExplorer.Server\NethereumExplorer.Server.csproj", "{AD170AB1-F7BD-4F2D-BD50-6D6F1141DAC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NethereumExplorer.Maui", "NethereumExplorer.Maui\NethereumExplorer.Maui.csproj", "{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -196,6 +198,31 @@ Global
 		{AD170AB1-F7BD-4F2D-BD50-6D6F1141DAC8}.Release|x64.Build.0 = Release|Any CPU
 		{AD170AB1-F7BD-4F2D-BD50-6D6F1141DAC8}.Release|x86.ActiveCfg = Release|Any CPU
 		{AD170AB1-F7BD-4F2D-BD50-6D6F1141DAC8}.Release|x86.Build.0 = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|iPhone.Deploy.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|iPhoneSimulator.Deploy.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|x64.Build.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|iPhone.Build.0 = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|x64.ActiveCfg = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|x64.Build.0 = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
