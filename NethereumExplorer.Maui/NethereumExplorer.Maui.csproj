@@ -28,25 +28,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiImage Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" IsAppIcon="true" Color="#512BD4" />
+    	<!-- App Icon -->
+    	<MauiImage Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" IsAppIcon="true" Color="#C00CC0" />
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
+    	<!-- Splash Screen -->
+    	<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
 
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
+    	<!-- Images -->
+    	<MauiImage Include="Resources\Images\*" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Blazor.FlexGrid" Version="1.0.0" />
-		<PackageReference Include="Nethereum.Web3" Version="4.1.1" />
-		<PackageReference Include="ReactiveUI" Version="13.1.1" />
-		<PackageReference Include="ReactiveUI.Blazor" Version="13.1.1" />
-		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
 	</ItemGroup>
 			
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
@@ -65,15 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-	  <None Include="wwwroot\css\open-iconic\FONT-LICENSE" />
-	  <None Include="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
-	  <None Include="wwwroot\css\open-iconic\ICON-LICENSE" />
-	  <None Include="wwwroot\css\open-iconic\README.md" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\..\NethereumBlazor\NethereumExplorer.Core\NethereumExplorer.Core.csproj" />
+	  <ProjectReference Include="..\NethereumExplorer.Core\NethereumExplorer.Core.csproj" />
 	</ItemGroup>
 
 </Project>
