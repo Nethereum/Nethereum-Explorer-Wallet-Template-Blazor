@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer.ClientWas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer.Server", "NethereumExplorer.Server\NethereumExplorer.Server.csproj", "{AD170AB1-F7BD-4F2D-BD50-6D6F1141DAC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NethereumExplorer.Maui", "NethereumExplorer.Maui\NethereumExplorer.Maui.csproj", "{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NethereumExplorer.Maui", "NethereumExplorer.Maui\NethereumExplorer.Maui.csproj", "{AE8C4D57-6D2B-4896-94BA-C97F2AD7FD1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OldHybrid", "OldHybrid", "{71823A77-D433-44C3-9981-11076F545591}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -226,6 +228,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8F35B0DE-B367-4378-B33E-957CA43CA6F8} = {71823A77-D433-44C3-9981-11076F545591}
+		{55EFB7AC-1695-4FA9-8CD3-0BFBE843A8BF} = {71823A77-D433-44C3-9981-11076F545591}
+		{900EF744-AD44-41D8-8680-36669164EDC6} = {71823A77-D433-44C3-9981-11076F545591}
+		{519BC819-5065-4265-97CF-094708F718C6} = {71823A77-D433-44C3-9981-11076F545591}
+		{BD41CF8E-38FB-48D4-8767-5D144F59105E} = {71823A77-D433-44C3-9981-11076F545591}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4D084C3-17AA-4072-804F-BDE2F9C53C10}
