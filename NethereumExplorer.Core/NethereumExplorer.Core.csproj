@@ -1,14 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+	<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
     <RazorLangVersion>3.0</RazorLangVersion>
+	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 	
-	<ItemGroup Condition=" '$(TargetFramework)'=='net6.0' ">
+	<ItemGroup Condition=" $(TargetFramework.Contains('net6.0')) ">
 		<PackageReference Include="Blazor.FlexGrid" Version="1.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
 		<PackageReference Include="Nethereum.Web3" Version="4.1.1" />
 		<PackageReference Include="ReactiveUI" Version="13.1.1" />
 		<PackageReference Include="ReactiveUI.Blazor" Version="13.1.1" />
@@ -32,14 +36,13 @@
 		<Content Remove="Shared\NavMenu.razor.css" />
 	</ItemGroup>
 
-
-
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" />
-	</ItemGroup>
-
+	
 	<PropertyGroup Condition=" '$(TargetFramework)'=='netstandard2.1' ">
 		<DisableScopedCssBundling>true</DisableScopedCssBundling>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
 </Project>

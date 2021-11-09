@@ -1,13 +1,13 @@
-﻿using Microsoft.Maui.Controls;
-using System;
+﻿using System;
+using Microsoft.Maui.Controls;
 
 namespace NethereumExplorer.Maui
 {
-    public partial class MainPage : ContentPage
-    {
-        public MainPage()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class MainPage : ContentPage
+	{
+		public MainPage()
+		{
+			InitializeComponent();
+		}
+	}
 }
