@@ -7,7 +7,7 @@ namespace NethereumExplorer.Services
         public List<TokenInfo> GetTokens(string chainId)
         {
             //hack / workaround chainId this needs to use the rpc getchainid
-            if (chainId.ToLower() == "https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c".ToLower())
+            if (chainId.ToLower() == "https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02".ToLower())
             {
                 return new List<TokenInfo>(
                     new []

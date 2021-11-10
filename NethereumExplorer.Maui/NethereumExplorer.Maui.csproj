@@ -29,10 +29,10 @@
 
 	<ItemGroup>
     	<!-- App Icon -->
-    	<MauiImage Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" IsAppIcon="true" Color="#C00CC0" />
+    	<MauiImage Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" IsAppIcon="true" Color="#512BD4" />
 
-    	<!-- Splash Screen -->
-    	<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
 
     	<!-- Images -->
     	<MauiImage Include="Resources\Images\*" />
@@ -53,7 +53,29 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Remove="Properties\launchSettings.json" />
+	  <Content Remove="wwwroot\images\0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png" />
+	  <Content Remove="wwwroot\images\logo192x192t.png" />
+	  <Content Remove="wwwroot\images\logo512.png" />
+	  <Content Remove="wwwroot\logo192x118.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\appicon.svg" />
+	  <None Remove="Resources\appiconfg.svg" />
+	  <None Remove="Resources\Images\logoN.svg" />
+	  <None Remove="Resources\logo512n.png" />
+	  <None Remove="Resources\logoN.svg" />
+	  <None Remove="Resources\logoNIcon.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\logo512n.png" />
+	  <MauiImage Include="Resources\appicon.svg" />
+	  <BundleResource Include="wwwroot\images\0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png" />
+	  
+	  <BundleResource Include="wwwroot\images\logo512.png" />
+	  
+	  <BundleResource Include="wwwroot\images\logo192x192t.png" />
 	</ItemGroup>
 
 	<ItemGroup>

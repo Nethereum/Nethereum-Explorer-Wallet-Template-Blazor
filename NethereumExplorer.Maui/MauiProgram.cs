@@ -7,6 +7,7 @@ using Microsoft.Maui.Controls.Hosting;
 using NethereumExplorer.Services;
 using NethereumExplorer.ViewModels;
 using Blazor.FlexGrid;
+using System.Net.Http;
 
 namespace NethereumExplorer.Maui
 {
@@ -27,6 +28,7 @@ namespace NethereumExplorer.Maui
 			builder.Services.AddBlazorWebView();
  
             var services = builder.Services;
+            
             var web3ServiceProvider = new Web3ProviderService();
             var accountsService = new AccountsService(web3ServiceProvider);
             var newBlockProcessingService = new NewBlockProcessingService(web3ServiceProvider);
@@ -50,7 +52,8 @@ namespace NethereumExplorer.Maui
             services.AddSingleton<SendErc20TransactionViewModel>();
             services.AddSingleton(accountsTransactionMonitoringService);
             services.AddSingleton<TransactionWithReceiptViewModel>();
-            services.AddSingleton<Web3UrlViewModel>();
+            services.AddSingleton<Web3UrlViewModel>();        
+           
 
             services.AddFlexGrid(cfg =>
             {

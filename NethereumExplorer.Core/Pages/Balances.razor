@@ -1,0 +1,221 @@
+﻿@page "/balances"
+@using Nethereum.Web3
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using System.Globalization
+@using NethereumExplorer.Services
+@using System.Diagnostics
+
+@inject IJSRuntime JSRuntime
+
+<h1>Token Balances</h1>
+
+ 
+   <div class="btn-toolbar mb-3" role="toolbar">
+        @if (userAccounts.Count > 0 )
+        {
+             <div class="input-group">
+                <select class="form-control form-control-sm" value="@selectedAccount" @onchange="SelectAccount" >
+                    @foreach (var accountItem in userAccounts)
+                    {
+                        <option value="@accountItem">@accountItem</option>
+                    }
+                </select>
+                <button @onclick="@(() => CheckBalances())" disabled="@Loading">Get Balance</button>
+                <button @onclick="@(() => RemoveAccount())" disabled="@Loading">Remove Account</button>
+              </div>
+        }
+        <div class="input-group">
+            <EditForm class="form-inline ml-lg-4 col-auto" Model="@editAccount" Context="formContext">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <InputText id="name" @bind-Value="editAccount.Address" placeholder="Enter addresss .. " />
+
+                <button type="submit" @onclick="@(() => AddAccount(formContext))" disabled="@Loading">Add Account to check balances</button>
+           
+            </EditForm>
+        </div>
+    </div>
+ 
+
+
+
+
+@if (BalanceResults != null)
+{
+    <br />
+    <h2>Total: @BalanceResults.Sum( x => x.Value).ToString("c", LocalFormat)</h2>
+    <h3>Account: <a href="https://etherscan.io/address/@checkingBalanceAccount" target="_blank">@checkingBalanceAccount</a></h3>
+    <br />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Token</th>
+                <th>Balance</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var balanceResult in BalanceResults)
+            {
+            <tr>
+                <td><a href="https://etherscan.io/token/@balanceResult.TokenAdress" target="_blank"><img src="@balanceResult.TokenImage" width="40" height="40" /> @balanceResult.TokenName</a></td>
+                <td>@balanceResult.Balance</td>
+                <td>@balanceResult.Price.ToString("c", LocalFormat)</td>
+                <td>@balanceResult.Value.ToString("C", LocalFormat)</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    @if (Loading)
+    {
+        <p>Checking tokens... @Progress</p>
+    }
+
+}
+
+@code {
+    private TokenBalanceService _tokenBalanceService;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LocalFormat = (NumberFormatInfo)NumberFormatInfo.CurrentInfo.Clone();
+        LocalFormat.CurrencySymbol = "$";
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetAccounts();
+            this.StateHasChanged();
+
+            var web3 = new Web3("https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02");
+            _tokenBalanceService = new TokenBalanceService(new HttpClient(), web3);
+        }
+    }
+
+    public async Task CheckBalances()
+    {
+        try
+        {
+            Loading = true;
+
+            BalanceResults = new List<BalanceResult>();
+            checkingBalanceAccount = selectedAccount;
+
+            var etherBalance = await _tokenBalanceService.GetEtherBalance(checkingBalanceAccount).ConfigureAwait(false);
+            BalanceResults.Add(etherBalance);
+            await InvokeAsync(() => this.StateHasChanged());
+            
+
+            var pageSize = 100;
+            var tokenCount = _tokenBalanceService.NumberOfTokens;
+
+            for (int i = 0; i < (tokenCount / pageSize); i++)
+            {
+                var pageBalances =  await _tokenBalanceService.GetBalances(i, pageSize, checkingBalanceAccount).ConfigureAwait(false);
+                Progress = pageSize * i;
+                BalanceResults.AddRange(pageBalances);
+                await InvokeAsync(() => this.StateHasChanged());
+            }
+
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+
+    public async Task SaveAsync(params string[] addresses)
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "userTokens", addresses);
+    }
+
+    public async Task<string> ReadAsync()
+    {
+        var addresses = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userTokens");
+        Console.WriteLine(addresses);
+        return addresses;
+    }
+
+    public async Task DeleteAsync()
+    {
+        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "userTokens");
+    }
+
+    public List<BalanceResult> BalanceResults { get; set; }
+
+    public bool Loading = false;
+    public int Progress;
+    private Account editAccount = new Account();
+    private List<string> userAccounts = new List<string>();
+    private string selectedAccount;
+    private string checkingBalanceAccount;
+    public NumberFormatInfo LocalFormat { get; set; }
+
+
+
+    public class Account
+    {
+        [Required]
+        [StringLength(42, ErrorMessage = "Please enter the 42 char address including the prefix 0x", MinimumLength = 42)]
+        public string Address { get; set; }
+    }
+
+    protected async Task AddAccount(EditContext formContext)
+    {
+        bool formIsValid = formContext.Validate();
+        if (formIsValid == false)
+            return;
+
+        if (!userAccounts.Contains(editAccount.Address))
+        {
+            userAccounts.Add(editAccount.Address);
+            selectedAccount = editAccount.Address;
+            await SaveAsync(userAccounts.ToArray());
+            await CheckBalances();
+        }
+    }
+
+    protected async Task GetAccounts()
+    {
+        var acccountString = await ReadAsync();
+        if (!string.IsNullOrEmpty(acccountString))
+        {
+            userAccounts = new List<string>(acccountString.Split(","));
+            selectedAccount = userAccounts[0];
+        }
+        else
+        {
+            userAccounts = new List<string>();
+        }
+
+    }
+
+    protected async Task RemoveAccount()
+    {
+        if (userAccounts.Contains(selectedAccount))
+        {
+            userAccounts.Remove(selectedAccount);
+            await SaveAsync(userAccounts.ToArray());
+        }
+    }
+
+    private void SelectAccount(ChangeEventArgs e)
+    {
+        selectedAccount = e.Value.ToString();
+    }
+
+
+}
+

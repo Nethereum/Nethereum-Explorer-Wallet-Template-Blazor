@@ -2,26 +2,26 @@
 @using NethereumExplorer.Services
 @using NethereumExplorer.ViewModels
 @using ReactiveUI
+@using System.Collections
 @using System.Reactive.Linq
 @using System.Reactive.Threading.Tasks
 @inherits LayoutComponentBase
 @inject NewBlockProcessingService NewBlockProcessingService
 @inject Web3UrlViewModel Web3UrlViewModel
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <div class="sidebar">
         <NavMenu/>
     </div>
     <div class="main">
         <nav class="navbar navbar-light bg-light">
-            <div class="form-inline">
-
-                <select class="form-control mr-sm-2" @onchange="UrlChange">
-                    <option value="https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c" selected>https://mainnet.infura.io</option>
+             <select class="form-control mr-sm-2" @onchange="UrlChange">
+                    <option value="https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02" selected>https://mainnet.infura.io</option>
                     <option value="https://mainnet.optimism.io">https://mainnet.optimism.io</option>
-                    <option value="https://kovan.infura.io/v3/7238211010344719ad14a89db874158c">https://kovan.infura.io</option>
-                    <option value="https://ropsten.infura.io/v3/7238211010344719ad14a89db874158c">https://ropsten.infura.io</option>
-                    <option value="https://rinkeby.infura.io/v3/7238211010344719ad14a89db874158c">https://rinkeby.infura.io</option>
+                    <option value="https://kovan.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02">https://kovan.infura.io</option>
+                    <option value="https://ropsten.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02">https://ropsten.infura.io</option>
+                    <option value="https://rinkeby.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02">https://rinkeby.infura.io</option>
                     <option value="http://127.0.0.1:8545">http://127.0.0.1:8545</option>
                     <option value="https://kovan.optimism.io">https://kovan.optimism.io</option>
                 </select>
@@ -29,18 +29,23 @@
 
                 @if (QueryError)
                 {
-
-                    <input class="form-control is-invalid mr-sm-2" type="search" placeholder="Search Block, Txn Hash" @bind="Query" aria-label="Search" required/>
+                     <div class="input-group mb-3">
+                        <input class="form-control is-invalid mr-sm-2" type="search" placeholder="Search Block, Txn Hash" @bind="Query" aria-label="Search" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" @onclick="SearchBlockchain">Search</button>
+                        </div>
+                    </div>
 
                 }
                 else
                 {
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search Block, Txn Hash" @bind="Query" aria-label="Search" required/>
-
-                }
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" @onclick="SearchBlockchain">Search</button>
-
-            </div>
+                    <div class="input-group mb-3">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search Block, Txn Hash" @bind="Query" aria-label="Search" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" @onclick="SearchBlockchain">Search</button>
+                        </div>
+                    </div>
+                } 
 
         </nav>
 
@@ -55,44 +60,115 @@
 @code
 {
 
+
     public string Query { get; set; }
     public bool QueryError { get; set; } = false;
+    private List<string> rpcEndpoints = new List<string>();
 
     protected override void OnInitialized()
     {
-        Web3UrlViewModel.Url = "https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c";
+        Web3UrlViewModel.Url = "https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02";
         NewBlockProcessingService.WhenAnyValue(x => x.Loading).SubscribeAndNotifyStateChanges(InvokeAsync, StateHasChanged);
     }
 
+    public async Task SaveAsync(params string[] addresses)
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "rpcEndPoints", addresses);
+    }
 
+    public async Task<string> ReadAsync()
+    {
+        var addresses = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "rpcEndPoints");
+        Console.WriteLine(addresses);
+        return addresses;
+    }
+
+    public async Task DeleteAsync()
+    {
+        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "rpcEndPoints");
+    }
 
     public void SearchBlockchain()
     {
-        Query = Query.Trim();
-        var searchType = SearchQueryParser.InferSearchType(Query);
-
-        switch (searchType)
+        if (!string.IsNullOrEmpty(Query))
         {
-            case SearchType.Block:
-                {
+            Query = Query.Trim();
+            var searchType = SearchQueryParser.InferSearchType(Query);
 
-                    NavigationManager.NavigateTo("block/" + Query);
-                    QueryError = false;
+            switch (searchType)
+            {
+                case SearchType.Block:
+                    {
+
+                        NavigationManager.NavigateTo("block/" + Query);
+                        QueryError = false;
+                        break;
+                    }
+                case SearchType.Transaction:
+                    {
+                        NavigationManager.NavigateTo("/transaction/" + Query);
+                        QueryError = false;
+                        break;
+                    }
+                default:
+                    QueryError = true;
                     break;
-                }
-            case SearchType.Transaction:
-                {
-                    NavigationManager.NavigateTo("/transaction/" + Query);
-                    QueryError = false;
-                    break;
-                }
-            default:
-                QueryError = true;
-                break;
+            }
+        }
+    }
+
+    protected async Task AddRpcEndpoint(EditContext formContext)
+    {
+        bool formIsValid = formContext.Validate();
+        if (formIsValid == false)
+            return;
+
+        if (!rpcEndpoints.Contains(Web3UrlViewModel.Url))
+        {
+            rpcEndpoints.Add(Web3UrlViewModel.Url);
+            var filteredDefault = rpcEndpoints.Where(x => !DefaultRpcEndPoints.Contains(x, StringComparer.CurrentCultureIgnoreCase));
+            await SaveAsync(filteredDefault.ToArray());
+        }
+    }
+
+    protected async Task GetRpcEndpoints()
+    {
+        var acccountString = await ReadAsync();
+        if (!string.IsNullOrEmpty(acccountString))
+        {
+            rpcEndpoints = new List<string>();
+            rpcEndpoints.AddRange(DefaultRpcEndPoints);
+            rpcEndpoints.AddRange(acccountString.Split(","));
+            Web3UrlViewModel.Url = rpcEndpoints[0];
+        }
+        else
+        {
+            rpcEndpoints = new List<string>();
         }
 
     }
 
+    protected async Task RemoveRpcEnpoint()
+    {
+        if (rpcEndpoints.Contains(Web3UrlViewModel.Url))
+        {
+            rpcEndpoints.Remove(Web3UrlViewModel.Url);
+            var filteredDefault = rpcEndpoints.Where(x => !DefaultRpcEndPoints.Contains(x, StringComparer.CurrentCultureIgnoreCase));
+            await SaveAsync(rpcEndpoints.ToArray());
+        }
+    }
+
+    public List<string> DefaultRpcEndPoints = new List<string>(new []
+        {
+        "https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02",
+        "https://mainnet.optimism.io",
+        "https://kovan.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02",
+        "https://ropsten.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02",
+        "https://rinkeby.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02",
+        "http://127.0.0.1:8545",
+        "https://kovan.optimism.io"
+        });
+   
     protected void UrlChange(ChangeEventArgs urlChangeEventArgs)
     {
         Web3UrlViewModel.Url = (string)urlChangeEventArgs.Value;

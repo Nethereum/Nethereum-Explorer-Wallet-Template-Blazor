@@ -151,6 +151,12 @@ namespace NethereumExplorer.Services
         public virtual string Owner { get; set; }
     }
 
+    [FunctionOutput]
+    public class BalanceOfOutputDTO : IFunctionOutputDTO
+    {
+        [Parameter("uint256", "balance", 1)]
+        public BigInteger Balance { get; set; }
+    }
 
     public partial class TransferFunction : TransferFunctionBase { }
 
