@@ -44,7 +44,7 @@ namespace NethereumExplorer.Services
             var etherBalance = Web3.Convert.FromWei(await _web3.Eth.GetBalance.SendRequestAsync(account));
             var etherPrice = (await GetPrices("ethereum"))["ethereum"]["usd"];
 
-            return new BalanceResult() { Balance = etherBalance, Price = etherPrice, TokenName = "ETH", Value = etherBalance * etherPrice, TokenImage = "images/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png" };
+            return new BalanceResult() { Balance = etherBalance, Price = etherPrice, TokenName = "ETH", Value = etherBalance * etherPrice, TokenImage = "_content/NethereumExplorer.Core/images/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png" };
         }
 
         public async Task<List<BalanceResult>> GetBalances(int page, int pageSize, string account)

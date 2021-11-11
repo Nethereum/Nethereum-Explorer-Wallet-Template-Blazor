@@ -53,9 +53,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Remove="wwwroot\images\0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png" />
-	  <Content Remove="wwwroot\images\logo192x192t.png" />
-	  <Content Remove="wwwroot\images\logo512.png" />
+	  <BundleResource Remove="wwwroot\images\**" />
+	  <Compile Remove="wwwroot\images\**" />
+	  <Content Remove="wwwroot\images\**" />
+	  <EmbeddedResource Remove="wwwroot\images\**" />
+	  <ImageAsset Remove="wwwroot\images\**" />
+	  <InterfaceDefinition Remove="wwwroot\images\**" />
+	  <None Remove="wwwroot\images\**" />
+	  <SceneKitAsset Remove="wwwroot\images\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Remove="wwwroot\logo192x118.png" />
 	</ItemGroup>
 
@@ -71,15 +79,18 @@
 	<ItemGroup>
 	  <MauiImage Include="Resources\logo512n.png" />
 	  <MauiImage Include="Resources\appicon.svg" />
-	  <BundleResource Include="wwwroot\images\0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png" />
-	  
-	  <BundleResource Include="wwwroot\images\logo512.png" />
-	  
-	  <BundleResource Include="wwwroot\images\logo192x192t.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\NethereumExplorer.Core\NethereumExplorer.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_MauiCompileToAdd Remove="wwwroot\images\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_MauiXamlToRemove Remove="wwwroot\images\**" />
 	</ItemGroup>
 
 </Project>
