@@ -5,6 +5,7 @@
 @using System.Collections
 @using System.Reactive.Linq
 @using System.Reactive.Threading.Tasks
+@using System.Text.RegularExpressions
 @inherits LayoutComponentBase
 @inject NewBlockProcessingService NewBlockProcessingService
 @inject Web3UrlViewModel Web3UrlViewModel
@@ -16,18 +17,30 @@
     </div>
     <div class="main">
         <nav class="navbar navbar-light bg-light">
-             <select class="form-control mr-sm-2" @onchange="UrlChange">
-                    <option value="https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02" selected>https://mainnet.infura.io</option>
-                    <option value="https://mainnet.optimism.io">https://mainnet.optimism.io</option>
-                    <option value="https://kovan.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02">https://kovan.infura.io</option>
-                    <option value="https://ropsten.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02">https://ropsten.infura.io</option>
-                    <option value="https://rinkeby.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02">https://rinkeby.infura.io</option>
-                    <option value="http://127.0.0.1:8545">http://127.0.0.1:8545</option>
-                    <option value="https://kovan.optimism.io">https://kovan.optimism.io</option>
-                </select>
-                <input type="text" class="form-control mr-sm-2" @bind="Web3UrlViewModel.Url" placeholder="Chain Url"/>
 
-                @if (QueryError)
+               @if (rpcEndpoints.Count > 0 )
+                {
+                     <div class="input-group">
+                        <select class="form-control mr-sm-2" value="@Web3UrlViewModel.Url" @onchange="UrlChange" >
+                            @foreach (var rpcEndPoint in rpcEndpoints)
+                            {
+                                <option value="@rpcEndPoint">@TrimInfura(rpcEndPoint)</option>
+                            }
+                        </select>
+                   
+                      </div>
+                }
+                 <div class="input-group mb-3">
+                    <input type="text" class="form-control mr-sm-2" @bind="Web3UrlViewModel.Url" placeholder="Chain Url"/>
+                    @if (!IsSelectedDefaultRpcEndPoint())
+                    {
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" @onclick="@(() => AddRpcEndpoint())">Save</button>
+                            <button class="btn btn-outline-secondary" @onclick="@(() => RemoveRpcEnpoint())">Remove</button>
+                        </div>
+                    }
+                </div>
+        @if (QueryError)
                 {
                      <div class="input-group mb-3">
                         <input class="form-control is-invalid mr-sm-2" type="search" placeholder="Search Block, Txn Hash" @bind="Query" aria-label="Search" required>
@@ -67,8 +80,18 @@
 
     protected override void OnInitialized()
     {
-        Web3UrlViewModel.Url = "https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02";
         NewBlockProcessingService.WhenAnyValue(x => x.Loading).SubscribeAndNotifyStateChanges(InvokeAsync, StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await GetRpcEndpoints();
+            this.StateHasChanged();
+
+            Web3UrlViewModel.Url = "https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02";
+        }
     }
 
     public async Task SaveAsync(params string[] addresses)
@@ -117,12 +140,21 @@
         }
     }
 
-    protected async Task AddRpcEndpoint(EditContext formContext)
+    protected string TrimInfura(string url)
     {
-        bool formIsValid = formContext.Validate();
-        if (formIsValid == false)
-            return;
+        var pattern =  @"https://\w*.infura.io/v3/";
+        var reg = new Regex(pattern);
+        if (reg.IsMatch(url) &&  DefaultRpcEndPoints.Contains(url, StringComparer.CurrentCultureIgnoreCase))
+        {
+            return url.Substring(0, url.IndexOf("/v3"));
+        }
 
+        return url;
+    }
+
+    protected async Task AddRpcEndpoint()
+    {
+        
         if (!rpcEndpoints.Contains(Web3UrlViewModel.Url))
         {
             rpcEndpoints.Add(Web3UrlViewModel.Url);
@@ -131,19 +163,26 @@
         }
     }
 
+    protected bool IsSelectedDefaultRpcEndPoint()
+    {
+        return DefaultRpcEndPoints.Contains(Web3UrlViewModel.Url, StringComparer.CurrentCultureIgnoreCase);
+    }
+
     protected async Task GetRpcEndpoints()
     {
-        var acccountString = await ReadAsync();
-        if (!string.IsNullOrEmpty(acccountString))
+        var rpcStored = await ReadAsync();
+        if (!string.IsNullOrEmpty(rpcStored))
         {
             rpcEndpoints = new List<string>();
             rpcEndpoints.AddRange(DefaultRpcEndPoints);
-            rpcEndpoints.AddRange(acccountString.Split(","));
+            rpcEndpoints.AddRange(rpcStored.Split(","));
             Web3UrlViewModel.Url = rpcEndpoints[0];
         }
         else
         {
             rpcEndpoints = new List<string>();
+            rpcEndpoints.AddRange(DefaultRpcEndPoints);
+            Web3UrlViewModel.Url = rpcEndpoints[0];
         }
 
     }
@@ -154,7 +193,8 @@
         {
             rpcEndpoints.Remove(Web3UrlViewModel.Url);
             var filteredDefault = rpcEndpoints.Where(x => !DefaultRpcEndPoints.Contains(x, StringComparer.CurrentCultureIgnoreCase));
-            await SaveAsync(rpcEndpoints.ToArray());
+            await SaveAsync(filteredDefault.ToArray());
+            Web3UrlViewModel.Url = rpcEndpoints[0];
         }
     }
 
