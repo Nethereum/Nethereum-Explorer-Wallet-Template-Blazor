@@ -16,13 +16,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
-    - name: Install MAUI Workloads
-      shell: pwsh
-      run: |
-       dotnet workload install wasm-tools
-       dotnet workload install android
-       # dotnet workload install ios
-       # dotnet workload install maccatalyst
+      # - name: Install MAUI Workloads
+      # shell: pwsh
+      # run: |
+      # dotnet workload install wasm-tools
+      # dotnet workload install android
+      # dotnet workload install ios
+      # dotnet workload install maccatalyst
      # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
       run: dotnet publish NethereumExplorer.ClientWasm/NethereumExplorer.ClientWasm.csproj -c Release -f net6.0 -o release --nologo
