@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Nethereum Light Explorer</title>
+    <base href="/" />
+    <link href="_content/NethereumExplorer.Core/css/bootstrap\bootstrap.min.css" rel="stylesheet" />
+    <link href="_content/Blazor.FlexGrid/FlexGridStyles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="_content/Blazor.FlexGrid/fontawesome/css/fontawesome.css" />
+    <link rel="stylesheet" href="_content/Blazor.FlexGrid/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="_content/Blazor.FlexGrid/fontawesome/css/regular.css" />
+    <link rel="stylesheet" href="_content/Blazor.FlexGrid/fontawesome/css/solid.css" />
+    <link rel="stylesheet" href="_content/Blazor.FlexGrid/fontawesome/css/svg-with-js.css" />
+    <link rel="stylesheet" href="_content/Blazor.FlexGrid/fontawesome/css/v4-shims.css" />
+    <script src="_content/Blazor.FlexGrid/flexGridIntereop.js"></script>
+    <link href="_content/NethereumExplorer.Core/css/app.css" rel="stylesheet" />
+    <link href="NethereumExplorer.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="images/logo512.png" />
+</head>
+<body>
+
+    <div id="app" class="page">
+    <div class="container">
+            <div class="content row justify-content-md-center">
+                <div class="content px-4 d-flex justify-content-center">
+                    <div class="card" style="width: 30rem;">
+                        <div class="card-header d-flex align-items-center">
+                            <h5>Loading... </h5>
+                            <div class="spinner-grow spinner-grow-sm ml-auto" role="status" aria-hidden="true"></div>
+                        </div>
+                        
+                        <div class="card-body row justify-content-md-center">
+                            <img src="images/logo512.png" class="rounded" width="192" alt="...">
+                            <h6 class="card-text text-center m-2"><strong>The Nethereum light explorer will load shortly</strong></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+            <script src="_framework/blazor.webassembly.js"></script>
+            <script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+</html>
