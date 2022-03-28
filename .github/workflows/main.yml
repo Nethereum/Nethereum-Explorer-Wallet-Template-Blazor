@@ -16,6 +16,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
+    - name: Install MAUI Workloads
+      run: dotnet workload install wasm-tools --ignore-failed-sources
       # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
       run: dotnet publish NethereumExplorer.ClientWasm/NethereumExplorer.ClientWasm.csproj -c Release -f net6.0 -r browser-wasm -o release --nologo
