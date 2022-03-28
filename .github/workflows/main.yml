@@ -7,7 +7,7 @@ on:
 jobs:
   deploy-to-github-pages:
     # use windows, in linux wants the ios / mac etc 
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v2
