@@ -25,8 +25,16 @@
       "url": "_framework\/blazor.webassembly.js"
     },
     {
+      "hash": "sha256-pRmcHKZN4T\/YbX9dj6ITT4sNtkJ9w07OLcwl4645nPg=",
+      "url": "_framework\/dotnet.6.0.3.0uxbbys9vm.js"
+    },
+    {
       "hash": "sha256-scXGarUHqfFWPq0d6kt1FgrQvd1\/ndIwUTFptznHbsc=",
       "url": "_framework\/dotnet.timezones.blat"
+    },
+    {
+      "hash": "sha256-AW7xegLOO5MgfdWQ5okeetFKzb4byQc4c+tkQjAO8+0=",
+      "url": "_framework\/dotnet.wasm"
     },
     {
       "hash": "sha256-WPyI4hWDPnOw62Nr27FkzGjdbucZnQD+Ph+GOPhAedw=",
@@ -45,7 +53,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-CzPv3xlK33NfAspsEYsXUHhmUkm3bzSHfuDspIDvv\/U=",
+      "hash": "sha256-lTO\/Po03Yvg2sqdZAcxT\/Gndj19ZToemSKr+LRJvNek=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -545,14 +553,6 @@
       "url": "_framework\/System.Xml.XmlDocument.dll"
     },
     {
-      "hash": "sha256-wzufmse8MW8NQj0aOK5uxvSFYD3WRT8LAFVeGwB7G7A=",
-      "url": "_framework\/dotnet.6.0.3.ik8x3sjmj7.js"
-    },
-    {
-      "hash": "sha256-N7Jc9h\/TwEExJEGlOwRqxoVPoP3F\/RU\/vOCVLrOwGCE=",
-      "url": "_framework\/dotnet.wasm"
-    },
-    {
       "hash": "sha256-tUIDbRiI9eKTk3ekVJboq3\/5\/tiLswV\/yQAFoThR6O4=",
       "url": "NethereumExplorer.ClientWasm.styles.css"
     },
@@ -705,5 +705,5 @@
       "url": "_content\/NethereumExplorer.Core\/NethereumExplorer.Core.bundle.scp.css"
     }
   ],
-  "version": "lrqe2Ui1"
+  "version": "EA9n9ZYN"
 };
