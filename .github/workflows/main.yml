@@ -17,8 +17,13 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     - name: Install MAUI Workloads
-      run: dotnet workload install wasm-tools
-      # publishes Blazor project to the release-folder
+      shell: pwsh
+      run: |
+       dotnet workload install wasm-tools
+       dotnet workload install android
+       dotnet workload install ios
+       dotnet workload install maccatalyst
+     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
       run: dotnet publish NethereumExplorer.ClientWasm/NethereumExplorer.ClientWasm.csproj -c Release -f net6.0 -r browser-wasm -o release --nologo
      # copy index.html to 404.html to serve the same file when a file is not found
