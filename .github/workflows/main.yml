@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 jobs:
   deploy-to-github-pages:
-    # use windows, in linux wants the ios / mac etc 
+    # using linux, on the project i used an os condition to not target the runtimes of android, ios, mac on linux 
     runs-on: ubuntu-latest
     steps:
       # uses GitHub's checkout action to checkout code form the master branch
@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
-      # - name: Install MAUI Workloads
+      # - name: Install MAUI Workloads / if were going to build all the project runtimes
       # shell: pwsh
       # run: |
       # dotnet workload install wasm-tools
