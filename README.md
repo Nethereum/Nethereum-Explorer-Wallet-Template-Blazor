@@ -2,7 +2,7 @@
 
 Nethereum Explorer is a .Net Blazor Wasm SPA, Desktop Windows and Mac, Android and iOS light blockchain explorer and simple wallet Template.
 
-You can try it here: http://explorer.nethereum.com
+You can try it here: https://explorer.nethereum.com
 
 The aim of this application is to provide another wallet / client reference for the final goal of providing a reusable common mvvm front end framework and libraries targetting all Dekstops (WinForms, Xamarin.Forms, Avalonia (https://avaloniaui.net/) for Windows, Mac, Linux), Mobile (Android and iOS using Xamarin.Forms), Browser SPA (Blazor in this example, but there is also [Uno](https://platform.uno/)) and gaming / vr engines (Unity3d).
 It started as a Demo of what Blazor could achieve in a complex application (when Blazor started) and was an attempt to use ReactiveUI in the browser. ReactiveUI is now fully supported in the browser thanks to the magic of the ReactiveUI team.
