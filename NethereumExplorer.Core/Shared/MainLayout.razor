@@ -89,8 +89,8 @@
         {
             await GetRpcEndpoints();
             this.StateHasChanged();
-
-            Web3UrlViewModel.Url = "https://mainnet.infura.io/v3/<Please use your INFURA ProjectId>";
+            //Defaulting to optimism as it does not require a projectId
+            Web3UrlViewModel.Url = "https://mainnet.optimism.io";
         }
     }
 
