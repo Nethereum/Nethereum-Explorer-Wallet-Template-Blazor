@@ -1,17 +1,11 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
-using Application = Microsoft.Maui.Controls.Application;
+﻿namespace NethereumExplorer.Maui;
 
-namespace NethereumExplorer.Maui
+public partial class App : Application
 {
-	public partial class App : Application
-	{
-		public App()
-		{
-			InitializeComponent();
+    public App()
+    {
+        InitializeComponent();
 
-			MainPage = new MainPage();
-		}
-	}
+        MainPage = new MainPage();
+    }
 }

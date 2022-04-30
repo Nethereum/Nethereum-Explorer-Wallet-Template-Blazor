@@ -1,11 +1,16 @@
-﻿using Foundation;
+using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
 namespace NethereumExplorer.Maui;
 
-[Register("AppDelegate")]
-public class AppDelegate : MauiUIApplicationDelegate
+class Program : MauiApplication
 {
 	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
+	static void Main(string[] args)
+	{
+		var app = new Program();
+		app.Run(args);
+	}
 }
